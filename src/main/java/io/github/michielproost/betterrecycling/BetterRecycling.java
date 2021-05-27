@@ -1,6 +1,10 @@
 package io.github.michielproost.betterrecycling;
 
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
+
+import java.io.File;
 
 /**
  * BetterRecycling Plugin:
@@ -9,13 +13,28 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class BetterRecycling extends JavaPlugin {
 
+    public BetterRecycling()
+    {
+        super();
+    }
+
+    /*
+    Extra constructor that will be initialized before each test.
+     */
+    protected BetterRecycling(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file)
+    {
+        super(loader, description, dataFolder, file);
+    }
+
     @Override
-    public void onEnable() {
+    public void onEnable()
+    {
         // TODO. Register commands, events & runnables.
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable()
+    {
         // TODO. Unregister commands, events & runnables.
     }
 
