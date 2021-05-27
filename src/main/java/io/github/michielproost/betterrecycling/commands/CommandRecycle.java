@@ -8,6 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Command: /recycle
  * Opens a GUI in which you can recycle materials into their crafting components.
@@ -23,15 +26,28 @@ public class CommandRecycle implements CommandExecutor {
             Player player = (Player) sender;
             // The player's inventory.
             Inventory inventory = player.getInventory();
+            // ItemStacks of player.
+            ArrayList<ItemStack> itemStacks = new ArrayList<>();
 
             Bukkit.getLogger().info("The following items are in the player's inventory:\n");
-            // Print each ItemStack to the console.
-            for (ItemStack stack: inventory.getContents())
+            for (ItemStack stack: inventory.getStorageContents())
             {
-                Bukkit.getLogger().info(
-                        stack.toString() + " : " + stack.getAmount()
-                );
+                // ItemStack exists.
+                if (stack != null)
+                {
+                    // Print itemStack to console.
+                    Bukkit.getLogger().info(
+                            stack.getType().name() + " : " + stack.getAmount()
+                    );
+                    // Add to player's ItemStacks.
+                    itemStacks.add(stack);
+                }
             }
+            //TODO. Further implement /recycle method.
+        } else {
+            // The sender is not an instance of a player.
+            sender.sendMessage("You have to be an instance of a player in order to utilize this method.");
+            Bukkit.getLogger().info("Invalid CommandsSender attempted to use the Recycle command.");
         }
         // Command is used correctly.
         return true;
