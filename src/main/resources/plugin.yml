@@ -2,3 +2,7 @@ name: BetterRecycling
 author: MichielProost
 main: io.github.michielproost.betterrecycling.BetterRecycling
 version: 1.0.0
+commands:
+  recycle:
+    description: Opens a GUI in which you can recycle materials into their crafting components.
+    usage: Issue the command by typing /recycle in the console.
