@@ -1,9 +1,13 @@
 package io.github.michielproost.betterrecycling.events;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -63,12 +67,24 @@ public class RecycleInventory implements Listener {
         }
     }
 
+    /**
+     * Open the inventory.
+     * @param entity A human entity (NPC or player).
+     */
+    public void openInventory(final HumanEntity entity)
+    {
+        entity.openInventory( recycleInventory );
+    }
+
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event){
-        // The player who joined.
-        Player player = event.getPlayer();
-        // Broadcast message to the whole server.
-        Bukkit.broadcastMessage("Welcome to the server " + player.getDisplayName() + "!");
+    public void onInventoryClick(final InventoryDragEvent event)
+    {
+        // If another inventory is clicked.
+        if (event.getInventory() != recycleInventory) {
+            event.setCancelled( true );
+        } else {
+            Bukkit.getLogger().info("User dragged an item in the recycle inventory.");
+        }
     }
 
 }

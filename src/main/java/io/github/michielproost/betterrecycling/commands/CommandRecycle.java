@@ -38,9 +38,11 @@ public class CommandRecycle implements CommandExecutor {
             // The inventory's storage contents.
             ItemStack[] itemStacks = inventory.getStorageContents();
             // Put items in recycle inventory as test.
-            recycleInventory.InitializeInventory( itemStacks );
+            // recycleInventory.InitializeInventory( itemStacks );
             // Print items in recycle inventory.
-            recycleInventory.print();
+            // recycleInventory.print();
+            // Open the recycle inventory.
+            recycleInventory.openInventory( player );
         } else {
             // The sender is not an instance of a player.
             sender.sendMessage("You have to be an instance of a player in order to utilize this method.");
