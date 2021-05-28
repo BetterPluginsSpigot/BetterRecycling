@@ -1,50 +1,67 @@
 package io.github.michielproost.betterrecycling;
 
 import io.github.michielproost.betterrecycling.commands.CommandRecycle;
+import io.github.michielproost.betterrecycling.dagger.DaggerInjector;
+import io.github.michielproost.betterrecycling.dagger.Injector;
+import io.github.michielproost.betterrecycling.dagger.modules.CommandRecycleModule;
+import io.github.michielproost.betterrecycling.dagger.modules.PluginModule;
+import io.github.michielproost.betterrecycling.events.RecycleInventory;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
+import javax.inject.Inject;
 import java.io.File;
-import java.util.Objects;
 
 /**
  * BetterRecycling Plugin:
  * A plugin in which you can recycle materials into their crafting components.
- * Author: Michiel Proost
+ * @author Michiel Proost
  */
 public class BetterRecycling extends JavaPlugin {
 
-    // Command to recycle materials.
-    private final CommandRecycle commandRecycle;
-
+    /**
+     * Constructor required for MockBukkit.
+     */
+    @Inject
     public BetterRecycling()
     {
         super();
-        this.commandRecycle = new CommandRecycle();
     }
 
-    /*
-    Extra constructor that will be initialized before each test.
+    /**
+     * Constructor required for MockBukkit.
      */
     protected BetterRecycling(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file)
     {
         super(loader, description, dataFolder, file);
-        this.commandRecycle = new CommandRecycle();
     }
 
     @Override
     public void onEnable()
     {
-        Objects.requireNonNull(
-                this.getCommand("recycle")
-        ).setExecutor( commandRecycle );
+        super.onEnable();
+
+        // Dependency injection with Dagger.
+        Injector injector = DaggerInjector.builder()
+                .pluginModule( new PluginModule(this) )
+                .commandRecycleModule( new CommandRecycleModule() )
+                .build();
+
+        // Register commands.
+        CommandRecycle commandRecycle = injector.getCommandRecycle();
+        this.getCommand("recycle").setExecutor( commandRecycle );
+
+        // Register listener.
+        RecycleInventory recycleInventory = injector.getRecycleInventory();
+        this.getServer().getPluginManager().registerEvents(recycleInventory, this);
     }
 
     @Override
     public void onDisable()
     {
-        // TODO. Unregister commands, events & runnables.
+        super.onDisable();
     }
 
 }
