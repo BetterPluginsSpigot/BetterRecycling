@@ -1,12 +1,11 @@
 package io.github.michielproost.betterrecycling;
 
-import io.github.michielproost.betterrecycling.commands.CommandRecycle;
+import io.github.michielproost.betterrecycling.commands.CommandHandler;
 import io.github.michielproost.betterrecycling.dagger.DaggerInjector;
 import io.github.michielproost.betterrecycling.dagger.Injector;
-import io.github.michielproost.betterrecycling.dagger.modules.CommandRecycleModule;
+import io.github.michielproost.betterrecycling.dagger.modules.CommandHandlerModule;
 import io.github.michielproost.betterrecycling.dagger.modules.PluginModule;
 import io.github.michielproost.betterrecycling.events.RecycleInventory;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -46,12 +45,12 @@ public class BetterRecycling extends JavaPlugin {
         // Dependency injection with Dagger.
         Injector injector = DaggerInjector.builder()
                 .pluginModule( new PluginModule(this) )
-                .commandRecycleModule( new CommandRecycleModule() )
+                .commandHandlerModule( new CommandHandlerModule() )
                 .build();
 
         // Register commands.
-        CommandRecycle commandRecycle = injector.getCommandRecycle();
-        this.getCommand("recycle").setExecutor( commandRecycle );
+        CommandHandler commandHandler = injector.getCommandHandler();
+        this.getCommand("betterrecycling").setExecutor( commandHandler );
 
         // Register listener.
         RecycleInventory recycleInventory = injector.getRecycleInventory();

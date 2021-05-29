@@ -11,8 +11,12 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
 
 import javax.inject.Inject;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Listener: RecycleInventory
@@ -76,14 +80,33 @@ public class RecycleInventory implements Listener {
         entity.openInventory( recycleInventory );
     }
 
-    @EventHandler
-    public void onInventoryClick(final InventoryDragEvent event)
+    /**
+     * Recycle every material in the inventory into their crafting components.
+     */
+    public void recycle()
     {
-        // If another inventory is clicked.
-        if (event.getInventory() != recycleInventory) {
-            event.setCancelled( true );
-        } else {
-            Bukkit.getLogger().info("User dragged an item in the recycle inventory.");
+        // Loop through all ItemStacks in the recycle inventory.
+        for (ItemStack stack: recycleInventory.getStorageContents())
+        {
+            // ItemStack exists.
+            if (stack != null)
+            {
+                // Get recipes of ItemStack.
+                List<Recipe> recipes = Bukkit.getRecipesFor( stack );
+                for (Recipe recipe: recipes)
+                {
+                    // Shaped (normal) crafting recipe.
+                    if (recipe instanceof ShapedRecipe)
+                    {
+                        ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
+                        Map<Character, ItemStack> map = shapedRecipe.getIngredientMap();
+                        for (Character key: map.keySet()) {
+                            Bukkit.getLogger().info("Key: " + key);
+                            Bukkit.getLogger().info("Value: " + map.get(key));
+                        }
+                    }
+                }
+            }
         }
     }
 
