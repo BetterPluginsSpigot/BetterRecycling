@@ -15,6 +15,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -56,19 +57,42 @@ public class RecycleInventory implements Listener {
     /**
      * Print all ItemStacks in the recycle inventory.
      */
-    public void print()
+    @Override
+    public String toString()
     {
-        Bukkit.getLogger().info("The following items are in the recycle inventory:\n");
+        // The non-empty storage contents.
+        ItemStack[] contents = getNonEmptyStorageContents();
+        // Build the message.
+        StringBuilder builder = new StringBuilder( "\nThe following items are in the recycle inventory:\n" );
+        for (ItemStack stack: contents) {
+            // Add itemStack to message.
+            builder.append(stack.getType().name())
+                    .append(" : ")
+                    .append(stack.getAmount())
+                    .append("\n");
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Get all the non-empty storage contents in the inventory.
+     * @return All the non-empty storage contents in the inventory.
+     */
+    private ItemStack[] getNonEmptyStorageContents()
+    {
+        // Store the non-empty contents.
+        List<ItemStack> list = new ArrayList<>();
         for (ItemStack stack: recycleInventory.getStorageContents()) {
             // ItemStack exists.
             if (stack != null)
             {
-                // Print itemStack to console.
-                Bukkit.getLogger().info(
-                        stack.getType().name() + " : " + stack.getAmount()
-                );
+                // Add to list.
+                list.add( stack );
             }
         }
+        // Return the non-empty contents.
+        ItemStack[] contents = new ItemStack[ list.size() ];
+        return list.toArray( contents );
     }
 
     /**
@@ -85,27 +109,43 @@ public class RecycleInventory implements Listener {
      */
     public void recycle()
     {
+        // The non-empty storage contents.
+        ItemStack[] contents = getNonEmptyStorageContents();
         // Loop through all ItemStacks in the recycle inventory.
-        for (ItemStack stack: recycleInventory.getStorageContents())
+        for (ItemStack stack: contents)
         {
-            // ItemStack exists.
-            if (stack != null)
+            // Get recipes of ItemStack.
+            List<Recipe> recipes = Bukkit.getRecipesFor( stack );
+            for (Recipe recipe: recipes)
             {
-                // Get recipes of ItemStack.
-                List<Recipe> recipes = Bukkit.getRecipesFor( stack );
-                for (Recipe recipe: recipes)
+                Bukkit.getLogger().info(recipe.getClass().getName());
+                // Shaped (normal) crafting recipe.
+                if (recipe instanceof ShapedRecipe)
                 {
-                    // Shaped (normal) crafting recipe.
-                    if (recipe instanceof ShapedRecipe)
-                    {
-                        ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
-                        Map<Character, ItemStack> map = shapedRecipe.getIngredientMap();
-                        for (Character key: map.keySet()) {
-                            Bukkit.getLogger().info("Key: " + key);
-                            Bukkit.getLogger().info("Value: " + map.get(key));
-                        }
+                    ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
+                    Map<Character, ItemStack> map = shapedRecipe.getIngredientMap();
+                    for (Character key: map.keySet()) {
+                        Bukkit.getLogger().info("Key: " + key);
+                        Bukkit.getLogger().info("Value: " + map.get(key));
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Check for clicks on events.
+     */
+    @EventHandler
+    public void onInventoryClick(final InventoryClickEvent event)
+    {
+        if (event.getInventory() != recycleInventory)
+        {
+            final ItemStack clickedItem = event.getCurrentItem();
+            // ItemStack exists.
+            if (clickedItem != null)
+            {
+                Bukkit.getLogger().info("Item clicked: " + clickedItem.getType().name());
             }
         }
     }

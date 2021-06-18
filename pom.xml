@@ -21,9 +21,29 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
 
+        <!-- JITPACK -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+
     </repositories>
 
     <dependencies>
+
+        <!-- BETTERCORE -->
+        <dependency>
+            <groupId>com.github.betterpluginsspigot</groupId>
+            <artifactId>bettercore</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <!-- BetterYAML -->
+        <dependency>
+            <groupId>com.github.BetterPluginsSpigot</groupId>
+            <artifactId>BetterYaml</artifactId>
+            <version>1.0.6</version>
+        </dependency>
 
         <!-- SPIGOT -->
         <dependency>
@@ -71,6 +91,13 @@
                     </artifactSet>
                     <!-- Auto exclude unused code -->
                     <minimizeJar>true</minimizeJar>
+                    <relocations>
+                        <relocation>
+                            <pattern>be.betterplugins.core</pattern>
+                            <pattern>be.dezijwegel.betteryaml</pattern>
+                            <shadedPattern>DIETER.IS.AWESOME</shadedPattern>
+                        </relocation>
+                    </relocations>
                 </configuration>
                 <executions>
                     <execution>
