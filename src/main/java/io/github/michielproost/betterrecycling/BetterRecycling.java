@@ -1,5 +1,6 @@
 package io.github.michielproost.betterrecycling;
 
+import be.dezijwegel.betteryaml.BetterYaml;
 import io.github.michielproost.betterrecycling.commands.CommandHandler;
 import io.github.michielproost.betterrecycling.dagger.DaggerInjector;
 import io.github.michielproost.betterrecycling.dagger.Injector;
