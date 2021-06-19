@@ -1,1 +1,3 @@
-hello_world: "Hello world!"
+player.join: "Welkom bij een server die geeft om het milieu. Recyclen!"
+
+required.argument: "Je moet een extra argument opgeven om dit commando te gebruiken."

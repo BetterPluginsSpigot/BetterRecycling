@@ -1,1 +1,3 @@
-hello_world: "Hello world!"
+player.join: "Welcome to a server that cares about the environment. Recycle away!"
+
+required.argument: "You need to provide an additional argument to use this command."

@@ -27,6 +27,10 @@ public class RecycleInventory implements Listener {
     private final Inventory recycleInventory;
     private final Messenger messenger;
 
+    /**
+     * Create a new recycle inventory.
+     * @param messenger The messenger.
+     */
     public RecycleInventory(Messenger messenger)
     {
         // Create an empty inventory with no owner.
@@ -78,7 +82,7 @@ public class RecycleInventory implements Listener {
      * Get all the non-empty storage contents in the inventory.
      * @return All the non-empty storage contents in the inventory.
      */
-    private ItemStack[] getNonEmptyStorageContents()
+    public ItemStack[] getNonEmptyStorageContents()
     {
         // Store the non-empty contents.
         List<ItemStack> list = new ArrayList<>();
@@ -106,11 +110,10 @@ public class RecycleInventory implements Listener {
 
     /**
      * Recycle every material in the inventory into their crafting components.
+     * @param contents The contents to be recycled.
      */
-    public void recycle()
+    public static void recycle( ItemStack[] contents )
     {
-        // The non-empty storage contents.
-        ItemStack[] contents = getNonEmptyStorageContents();
         // Loop through all ItemStacks in the recycle inventory.
         for (ItemStack stack: contents)
         {
@@ -139,13 +142,13 @@ public class RecycleInventory implements Listener {
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent event)
     {
-        if (event.getInventory() != recycleInventory)
+        if (event.getInventory() == recycleInventory)
         {
             final ItemStack clickedItem = event.getCurrentItem();
             // ItemStack exists.
             if (clickedItem != null)
             {
-                Bukkit.getLogger().info("Item clicked: " + clickedItem.getType().name());
+                // Bukkit.getLogger().info("Item clicked: " + clickedItem.getType().name());
             }
         }
     }
@@ -155,10 +158,10 @@ public class RecycleInventory implements Listener {
      * @param event The event.
      */
     @EventHandler
-    public void onStartUp(final PlayerJoinEvent event)
+    public void onPlayerJoin(final PlayerJoinEvent event)
     {
         messenger.sendMessage(
-                new ArrayList<Player>(Bukkit.getOnlinePlayers()), "hello_world"
+                new ArrayList<Player>(Bukkit.getOnlinePlayers()), "player_join"
         );
     }
 

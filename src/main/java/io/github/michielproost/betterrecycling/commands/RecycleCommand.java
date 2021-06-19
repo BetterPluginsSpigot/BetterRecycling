@@ -1,9 +1,12 @@
 package io.github.michielproost.betterrecycling.commands;
 
+import be.betterplugins.core.commands.BPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
 import io.github.michielproost.betterrecycling.events.RecycleInventory;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -36,13 +39,62 @@ public class RecycleCommand extends InventoryCommand {
     }
 
     @Override
-    public boolean execute(Player player, Command command, String[] strings)
+    public boolean execute(@NotNull Player player, @NotNull Command cmd, String[] args)
+    {
+        // Argument is given.
+        if (args[2] != null)
+        {
+            // Get the appropriate command.
+            String commandName = args[2].toLowerCase();
+
+            // Execute the appropriate command.
+            switch (commandName){
+                // Recycle materials in recycle inventory.
+                case "inventory": {
+                    return recycleInventory();
+                }
+                // Recycle player's handheld item.
+                case "own": {
+                    return recycleHandheld( player );
+                }
+            }
+        } else {
+            // Recycle materials in recycle inventory.
+            return recycleInventory();
+        }
+        // Command was used correctly.
+        return true;
+    }
+
+    /**
+     * Recycle the materials in the recycle inventory.
+     * @return Whether or not the command was used correctly.
+     */
+    private boolean recycleInventory()
     {
         // Print contents.
         System.out.println( recycleInventory );
         // Recycle the materials.
-        recycleInventory.recycle();
+        RecycleInventory.recycle( recycleInventory.getNonEmptyStorageContents() );
         // Command is used correctly.
         return true;
     }
+
+    /**
+     * Recycle the player's handheld item and put the materials in its inventory.
+     * @param player The player who issued the command.
+     * @return Whether or not the command was used correctly.
+     */
+    private boolean recycleHandheld( Player player )
+    {
+        // Get handheld item.
+        ItemStack handheld = player.getInventory().getItemInMainHand();
+        // Convert to array.
+        ItemStack[] handheldArray = {handheld};
+        // Recycle the handheld item.
+        RecycleInventory.recycle( handheldArray );
+        // Command is used correctly.
+        return true;
+    }
+
 }

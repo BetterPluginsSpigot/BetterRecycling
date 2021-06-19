@@ -1,1 +1,5 @@
-hello_world: {hello_world}
+# PLAYER
+player.join: {player.join}
+
+# REQUIRED
+required.argument: {required.argument}

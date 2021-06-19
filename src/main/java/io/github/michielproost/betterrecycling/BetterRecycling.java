@@ -81,7 +81,10 @@ public class BetterRecycling extends JavaPlugin {
 
         // Create messenger.
         Messenger messenger =
-                new Messenger( localisation.getMessages(), new BPLogger(Level.WARNING), "[BR] " + ChatColor.DARK_AQUA );
+                new Messenger(
+                        localisation.getMessages(),
+                        new BPLogger(Level.WARNING),
+                        ChatColor.BLUE + "[BR] " + ChatColor.DARK_GREEN );
 
         // Register listener.
         RecycleInventory recycleInventory = new RecycleInventory( messenger );
