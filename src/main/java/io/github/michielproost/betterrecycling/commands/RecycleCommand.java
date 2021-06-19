@@ -2,13 +2,10 @@ package io.github.michielproost.betterrecycling.commands;
 
 import be.betterplugins.core.messaging.messenger.Messenger;
 import io.github.michielproost.betterrecycling.events.RecycleInventory;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,7 +16,6 @@ import java.util.List;
  */
 public class RecycleCommand extends InventoryCommand {
 
-    @Inject
     public RecycleCommand(Messenger messenger, RecycleInventory recycleInventory) {
         super(messenger, recycleInventory);
     }

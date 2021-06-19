@@ -6,7 +6,6 @@ import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import java.util.List;
  */
 public class OpenCommand extends InventoryCommand {
 
-    @Inject
     public OpenCommand(Messenger messenger, RecycleInventory recycleInventory) {
         super(messenger, recycleInventory);
     }

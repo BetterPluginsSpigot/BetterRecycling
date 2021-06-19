@@ -8,13 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +27,6 @@ public class RecycleInventory implements Listener {
     private final Inventory recycleInventory;
     private final Messenger messenger;
 
-    @Inject
     public RecycleInventory(Messenger messenger)
     {
         // Create an empty inventory with no owner.

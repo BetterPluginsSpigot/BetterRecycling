@@ -7,7 +7,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +19,6 @@ public class CommandHandler implements CommandExecutor {
     // Map every command to its name.
     private final Map<String, BPCommand> commands;
 
-    @Inject
     public CommandHandler(OpenCommand open, RecycleCommand recycle)
     {
         // Create map.
