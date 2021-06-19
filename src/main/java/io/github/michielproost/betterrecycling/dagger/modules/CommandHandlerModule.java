@@ -26,7 +26,7 @@ public class CommandHandlerModule {
     @Provides
     public RecycleInventory provideRecycleInventory()
     {
-        return new RecycleInventory();
+        return new RecycleInventory( messenger );
     }
 
     @Provides

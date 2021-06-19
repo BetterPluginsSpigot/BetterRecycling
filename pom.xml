@@ -84,18 +84,21 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version>
                 <configuration>
-                    <artifactSet>
+                    <!-- <artifactSet>
                         <includes>
                             <include>com.google.dagger:dagger</include>
                         </includes>
-                    </artifactSet>
+                    </artifactSet> -->
                     <!-- Auto exclude unused code -->
                     <minimizeJar>true</minimizeJar>
                     <relocations>
                         <relocation>
                             <pattern>be.betterplugins.core</pattern>
+                            <shadedPattern>io.github.MichielProost.BetterRecycling.shade.core</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>be.dezijwegel.betteryaml</pattern>
-                            <shadedPattern>DIETER.IS.AWESOME</shadedPattern>
+                            <shadedPattern>io.github.MichielProost.BetterRecycling.shade.betteryaml</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
