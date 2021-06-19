@@ -14,6 +14,10 @@ public class CommandHandlerModule {
 
     public final Messenger messenger;
 
+    /**
+     * Create command handler module.
+     * @param messenger The messenger.
+     */
     public CommandHandlerModule(Messenger messenger)
     {
         this.messenger = messenger;

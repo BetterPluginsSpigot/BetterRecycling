@@ -4,13 +4,15 @@ import dagger.Module;
 import dagger.Provides;
 import io.github.michielproost.betterrecycling.BetterRecycling;
 
-import javax.inject.Singleton;
-
 @Module
 public class PluginModule {
 
     public final BetterRecycling plugin;
 
+    /**
+     * Create plugin module.
+     * @param betterRecycling The BetterRecycling plugin.
+     */
     public PluginModule(BetterRecycling betterRecycling)
     {
         this.plugin = betterRecycling;

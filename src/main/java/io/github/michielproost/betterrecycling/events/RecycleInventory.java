@@ -1,14 +1,14 @@
 package io.github.michielproost.betterrecycling.events;
 
+import be.betterplugins.core.messaging.messenger.Messenger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -27,12 +27,15 @@ import java.util.Map;
 public class RecycleInventory implements Listener {
 
     private final Inventory recycleInventory;
+    private final Messenger messenger;
 
     @Inject
-    public RecycleInventory()
+    public RecycleInventory(Messenger messenger)
     {
         // Create an empty inventory with no owner.
         recycleInventory = Bukkit.createInventory(null, 36, "RecycleBin");
+        // Initialize the messenger.
+        this.messenger = messenger;
     }
 
     /**
@@ -148,6 +151,18 @@ public class RecycleInventory implements Listener {
                 Bukkit.getLogger().info("Item clicked: " + clickedItem.getType().name());
             }
         }
+    }
+
+    /**
+     * Message shown when a new player joins the server.
+     * @param event The event.
+     */
+    @EventHandler
+    public void onStartUp(final PlayerJoinEvent event)
+    {
+        messenger.sendMessage(
+                new ArrayList<Player>(Bukkit.getOnlinePlayers()), "hello_world"
+        );
     }
 
 }
