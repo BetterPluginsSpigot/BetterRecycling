@@ -1,8 +1,10 @@
 package io.github.michielproost.betterrecycling.events;
 
 import be.betterplugins.core.messaging.messenger.Messenger;
+import io.github.michielproost.betterrecycling.model.Recycler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,10 +42,20 @@ public class RecycleInventory implements Listener {
     }
 
     /**
-     * Initialize the inventory with ItemStacks.
+     * Get the non-empty storage contents of the inventory.
+     * @return The non-empty storage contents of the inventory.
+     */
+    public ItemStack[] getNonEmptyStorageContents(){
+        return Recycler.getNonEmptyStorageContents(
+                recycleInventory.getStorageContents()
+        );
+    }
+
+    /**
+     * Add ItemStacks to the recycle inventory.
      * @param itemStacks The stacks to put in the inventory.
      */
-    public void InitializeInventory(ItemStack[] itemStacks)
+    public void addItems(ItemStack[] itemStacks)
     {
         // Put each ItemStack in the recycle bin.
         recycleInventory.setStorageContents( itemStacks );
@@ -65,7 +77,7 @@ public class RecycleInventory implements Listener {
     public String toString()
     {
         // The non-empty storage contents.
-        ItemStack[] contents = getNonEmptyStorageContents();
+        ItemStack[] contents = Recycler.getNonEmptyStorageContents( recycleInventory.getStorageContents() );
         // Build the message.
         StringBuilder builder = new StringBuilder( "\nThe following items are in the recycle inventory:\n" );
         for (ItemStack stack: contents) {
@@ -79,61 +91,12 @@ public class RecycleInventory implements Listener {
     }
 
     /**
-     * Get all the non-empty storage contents in the inventory.
-     * @return All the non-empty storage contents in the inventory.
-     */
-    public ItemStack[] getNonEmptyStorageContents()
-    {
-        // Store the non-empty contents.
-        List<ItemStack> list = new ArrayList<>();
-        for (ItemStack stack: recycleInventory.getStorageContents()) {
-            // ItemStack exists.
-            if (stack != null)
-            {
-                // Add to list.
-                list.add( stack );
-            }
-        }
-        // Return the non-empty contents.
-        ItemStack[] contents = new ItemStack[ list.size() ];
-        return list.toArray( contents );
-    }
-
-    /**
      * Open the inventory.
      * @param entity A human entity (NPC or player).
      */
     public void openInventory(final HumanEntity entity)
     {
         entity.openInventory( recycleInventory );
-    }
-
-    /**
-     * Recycle every material in the inventory into their crafting components.
-     * @param contents The contents to be recycled.
-     */
-    public static void recycle( ItemStack[] contents )
-    {
-        // Loop through all ItemStacks in the recycle inventory.
-        for (ItemStack stack: contents)
-        {
-            // Get recipes of ItemStack.
-            List<Recipe> recipes = Bukkit.getRecipesFor( stack );
-            for (Recipe recipe: recipes)
-            {
-                Bukkit.getLogger().info(recipe.getClass().getName());
-                // Shaped (normal) crafting recipe.
-                if (recipe instanceof ShapedRecipe)
-                {
-                    ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
-                    Map<Character, ItemStack> map = shapedRecipe.getIngredientMap();
-                    for (Character key: map.keySet()) {
-                        Bukkit.getLogger().info("Key: " + key);
-                        Bukkit.getLogger().info("Value: " + map.get(key));
-                    }
-                }
-            }
-        }
     }
 
     /**

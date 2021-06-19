@@ -3,6 +3,7 @@ package io.github.michielproost.betterrecycling.commands;
 import be.betterplugins.core.commands.BPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
 import io.github.michielproost.betterrecycling.events.RecycleInventory;
+import io.github.michielproost.betterrecycling.model.Recycler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
@@ -42,10 +43,10 @@ public class RecycleCommand extends InventoryCommand {
     public boolean execute(@NotNull Player player, @NotNull Command cmd, String[] args)
     {
         // Argument is given.
-        if (args[2] != null)
+        if (args[1] != null)
         {
             // Get the appropriate command.
-            String commandName = args[2].toLowerCase();
+            String commandName = args[1].toLowerCase();
 
             // Execute the appropriate command.
             switch (commandName){
@@ -75,7 +76,7 @@ public class RecycleCommand extends InventoryCommand {
         // Print contents.
         System.out.println( recycleInventory );
         // Recycle the materials.
-        RecycleInventory.recycle( recycleInventory.getNonEmptyStorageContents() );
+        Recycler.recycle( recycleInventory.getNonEmptyStorageContents() );
         // Command is used correctly.
         return true;
     }
@@ -92,7 +93,9 @@ public class RecycleCommand extends InventoryCommand {
         // Convert to array.
         ItemStack[] handheldArray = {handheld};
         // Recycle the handheld item.
-        RecycleInventory.recycle( handheldArray );
+        ItemStack[] recycled = Recycler.recycle( handheldArray );
+        // Add recycled components to inventory.
+        recycleInventory.addItems( recycled );
         // Command is used correctly.
         return true;
     }
