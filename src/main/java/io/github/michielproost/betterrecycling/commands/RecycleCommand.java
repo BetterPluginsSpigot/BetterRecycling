@@ -7,6 +7,7 @@ import io.github.michielproost.betterrecycling.model.Recycler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -94,8 +95,14 @@ public class RecycleCommand extends InventoryCommand {
         ItemStack[] handheldArray = {handheld};
         // Recycle the handheld item.
         ItemStack[] recycled = Recycler.recycle( handheldArray );
+        // Print recycled components.
+        for(ItemStack stack: recycled){
+            Bukkit.getLogger().info( stack.getType().name() );
+        }
+        // Get player's inventory.
+        Inventory inventory = player.getInventory();
         // Add recycled components to inventory.
-        recycleInventory.addItems( recycled );
+        inventory.addItem( recycled );
         // Command is used correctly.
         return true;
     }

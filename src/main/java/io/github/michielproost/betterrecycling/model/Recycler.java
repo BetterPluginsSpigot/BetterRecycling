@@ -26,22 +26,16 @@ public class Recycler {
             List<Recipe> recipes = Bukkit.getRecipesFor( stack );
             for (Recipe recipe: recipes)
             {
-                Bukkit.getLogger().info(recipe.getClass().getName());
                 // Shaped (normal) crafting recipe.
                 if (recipe instanceof ShapedRecipe)
                 {
                     ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
                     Map<Character, ItemStack> map = shapedRecipe.getIngredientMap();
-                    list.addAll(
-                            map.values()
-                    );
-                    for (Character key: map.keySet()) {
-                        Bukkit.getLogger().info("Key: " + key);
-                        Bukkit.getLogger().info("Value: " + map.get(key));
-                    }
+                    list.addAll( map.values() );
                 }
             }
         }
+
         // Return the non-empty recycled components.
         ItemStack[] recycledComponents = new ItemStack[ list.size() ];
         ItemStack[] recycled = list.toArray( recycledComponents );
