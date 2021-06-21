@@ -48,8 +48,18 @@ public class RecycleCommand extends PlayerBPCommand {
     {
         // Get handheld item.
         ItemStack handheld = player.getInventory().getItemInMainHand();
+        // The handheld item's type.
+        String handheldTypeName = handheld.getType().name().toLowerCase();
         // Recycle the handheld item.
         ItemStack[] recycled = Recycler.recycle( handheld );
+        // Item cannot be recycled.
+        if (recycled.length == 0){
+            messenger.sendMessage(
+                    player,
+                    "The following item cannot be recycled: " + handheldTypeName
+            );
+            return true;
+        }
         // Get player's inventory.
         Inventory inventory = player.getInventory();
         // Add recycled components to inventory.

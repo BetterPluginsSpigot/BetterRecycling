@@ -38,7 +38,7 @@ public class Recycler {
     /**
      * Recycle an individual ItemStack into its corresponding crafting components.
      * @param stack The contents to be recycled.
-     * @return The corresponding crafting components.
+     * @return The corresponding crafting components. Returns null if the item can't be recycled.
      */
     public static ItemStack[] recycle( ItemStack stack )
     {
