@@ -2,7 +2,6 @@ package io.github.michielproost.betterrecycling.commands;
 
 import be.betterplugins.core.commands.BPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,8 +23,8 @@ public class CommandHandler implements CommandExecutor {
 
     /**
      * Create a new CommandHandler.
-     * @param recycle Recycle the player's handheld item.
      * @param messenger The messenger.
+     * @param recycle Recycle the player's handheld item.
      */
     public CommandHandler(Messenger messenger, RecycleCommand recycle)
     {

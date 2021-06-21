@@ -6,3 +6,4 @@ commands:
   betterrecycling:
     description: Basis for all recycle commands.
     usage: Issue the command by typing /betterrecycling in the console.
+    aliases: [br]
