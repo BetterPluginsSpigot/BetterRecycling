@@ -1,67 +1,80 @@
 package io.github.michielproost.betterrecycling.model;
 
+import io.github.michielproost.betterrecycling.Util.ArrayUtil;
+import io.github.michielproost.betterrecycling.Util.Conversions;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+/**
+ * Class which can recycle items into their corresponding crafting components.
+ * @author Michiel Proost
+ */
 public class Recycler {
 
     /**
-     * Recycle every material in the inventory into their crafting components.
-     * @param contents The contents to be recycled.
+     * Recycle the ItemStacks into their corresponding crafting components.
+     * @param input The contents to be recycled.
+     * @return The corresponding crafting components.
      */
-    public static ItemStack[] recycle( ItemStack[] contents )
+    public static ItemStack[] recycle( ItemStack[] input )
     {
-        // Store the components of the recycled materials.
-        List<ItemStack> list = new ArrayList<>();
-        // Loop through all ItemStacks in the recycle inventory.
-        for (ItemStack stack: contents)
+        // Store crafting components.
+        ItemStack[] recycled = new ItemStack[0];
+        // Loop through all ItemStacks in the input.
+        for (ItemStack stack: input)
         {
-            // Get recipes of ItemStack.
-            List<Recipe> recipes = Bukkit.getRecipesFor( stack );
-            for (Recipe recipe: recipes)
-            {
-                // Shaped (normal) crafting recipe.
-                if (recipe instanceof ShapedRecipe)
-                {
-                    ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
-                    Map<Character, ItemStack> map = shapedRecipe.getIngredientMap();
-                    list.addAll( map.values() );
-                }
-            }
+            // Add crafting components to
+            recycled = ArrayUtil.concatenate( recycled, recycle( stack ) );
         }
-
-        // Return the non-empty recycled components.
-        ItemStack[] recycledComponents = new ItemStack[ list.size() ];
-        ItemStack[] recycled = list.toArray( recycledComponents );
-        return getNonEmptyStorageContents( recycled );
+        // Return crafting components.
+        return recycled;
     }
 
     /**
-     * Get all the non-empty storage contents in the inventory.
-     * @param itemStacks The item stacks, including non-empty stacks.
-     * @return All the non-empty storage contents in the inventory.
+     * Recycle an individual ItemStack into its corresponding crafting components.
+     * @param stack The contents to be recycled.
+     * @return The corresponding crafting components.
+     */
+    public static ItemStack[] recycle( ItemStack stack )
+    {
+        // Store the corresponding crafting components in a list.
+        List<ItemStack> recycledList = new ArrayList<>();
+        // Get recipes of ItemStack.
+        List<Recipe> recipes = Bukkit.getRecipesFor( stack );
+        // Loop through all the recipes.
+        for (Recipe recipe: recipes)
+        {
+            // Shaped (normal) crafting recipe.
+            if (recipe instanceof ShapedRecipe)
+            {
+                // Cast to shaped recipe.
+                ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
+                // Get ingredient map.
+                Map<Character, ItemStack> ingredientMap = shapedRecipe.getIngredientMap();
+                recycledList.addAll( ingredientMap.values() );
+            }
+        }
+        // Convert list to array.
+        ItemStack[] recycledArray = Conversions.ListToArray( recycledList );
+        // Remove empty contents and return array.
+        return getNonEmptyStorageContents( recycledArray );
+    }
+
+    /**
+     * Get all the non-empty ItemStacks.
+     * @param itemStacks The ItemStacks, including non-empty ItemStacks.
+     * @return All the non-empty ItemStacks.
      */
     public static ItemStack[] getNonEmptyStorageContents(ItemStack[] itemStacks)
     {
-        // Store the non-empty contents.
-        List<ItemStack> list = new ArrayList<>();
-        for (ItemStack stack: itemStacks) {
-            // ItemStack exists.
-            if (stack != null)
-            {
-                // Add to list.
-                list.add( stack );
-            }
-        }
-        // Return the non-empty contents.
-        ItemStack[] contents = new ItemStack[ list.size() ];
-        return list.toArray( contents );
+        return Arrays   .stream( itemStacks )
+                        .filter(Objects::nonNull)
+                        .toArray(ItemStack[]::new);
     }
 
 }

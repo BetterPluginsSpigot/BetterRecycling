@@ -100,23 +100,6 @@ public class RecycleInventory implements Listener {
     }
 
     /**
-     * Check for clicks on events.
-     */
-    @EventHandler
-    public void onInventoryClick(final InventoryClickEvent event)
-    {
-        if (event.getInventory() == recycleInventory)
-        {
-            final ItemStack clickedItem = event.getCurrentItem();
-            // ItemStack exists.
-            if (clickedItem != null)
-            {
-                // Bukkit.getLogger().info("Item clicked: " + clickedItem.getType().name());
-            }
-        }
-    }
-
-    /**
      * Message shown when a new player joins the server.
      * @param event The event.
      */
