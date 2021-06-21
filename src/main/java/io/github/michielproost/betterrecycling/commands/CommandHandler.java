@@ -1,6 +1,7 @@
 package io.github.michielproost.betterrecycling.commands;
 
 import be.betterplugins.core.commands.BPCommand;
+import be.betterplugins.core.commands.shortcuts.PlayerBPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,40 +20,54 @@ public class CommandHandler implements CommandExecutor {
     // The messenger.
     private final Messenger messenger;
     // Map every command to its name.
-    private final Map<String, BPCommand> commands;
+    private final Map<String, PlayerBPCommand> commands;
+    // Help command.
+    private final HelpCommand helpCommand;
 
     /**
      * Create a new CommandHandler.
      * @param messenger The messenger.
-     * @param recycle Recycle the player's handheld item.
      */
-    public CommandHandler(Messenger messenger, RecycleCommand recycle)
+    public CommandHandler(Messenger messenger)
     {
         // Initialize the messenger.
         this.messenger = messenger;
+
+        PlayerBPCommand recycle = new RecycleCommand( messenger );
+
         // Create map.
-        this.commands = new HashMap<String, BPCommand>()
+        this.commands = new HashMap<String, PlayerBPCommand>()
         {{
+            // RecycleCommand:
             put(recycle.getCommandName(), recycle);
+            for (String alias: recycle.getAliases()){
+                put(alias, recycle);
+            }
         }};
+
+        this.helpCommand = new HelpCommand( messenger, commands );
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args)
     {
-        // An argument has to be given.
-        if (args.length > 0)
+        // Get name of desired command.
+        String commandName = args.length == 0 ? "help" : args[0].toLowerCase();
+        // Check if command exists.
+        if (commands.containsKey( commandName ))
         {
-            // Get the appropriate command.
-            String commandName = args[0].toLowerCase();
-            BPCommand bpCommand = this.commands.get( commandName );
+            // Get appropriate command.
+            PlayerBPCommand playerBPCommand = commands.get( commandName );
             // Execute command.
-            return bpCommand.execute(sender, cmd, args);
-        } else {
-            // No argument was given.
-            messenger.sendMessage(sender, "required.argument");
-            return true;
+            playerBPCommand.execute(sender, cmd, args);
         }
+        else
+        {
+            // Execute help command.
+            return helpCommand.execute( sender, cmd, args );
+        }
+        // Command is used correctly.
+        return true;
     }
 
 }

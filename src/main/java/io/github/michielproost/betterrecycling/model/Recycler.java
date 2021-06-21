@@ -56,7 +56,7 @@ public class Recycler {
                 ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
                 // Get ingredient map.
                 Map<Character, ItemStack> ingredientMap = shapedRecipe.getIngredientMap();
-
+                // Add crafting components to list.
                 recycledList.addAll( ingredientMap.values() );
             }
         }

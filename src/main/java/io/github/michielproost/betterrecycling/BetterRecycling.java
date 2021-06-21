@@ -91,10 +91,7 @@ public class BetterRecycling extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(eventListener, this);
 
         // Register commands.
-        CommandHandler commandHandler = new CommandHandler(
-                messenger,
-                new RecycleCommand( messenger )
-        );
+        CommandHandler commandHandler = new CommandHandler( messenger );
         this.getCommand("betterrecycling").setExecutor( commandHandler );
     }
 

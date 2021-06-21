@@ -1,3 +1,4 @@
 player.join: "Welkom bij een server die geeft om het milieu. Recyclen!"
 
-required.argument: "Je moet een extra argument opgeven om dit commando te gebruiken."
+help.intro: "Welkom bij BetterRecycling. Je vind een lijst van alle mogelijke commando's beneden."
+help.recycle: "Het item in je hand wordt gerecycleerd en de bijhorende onderdelen worden gestoken in je inventory."

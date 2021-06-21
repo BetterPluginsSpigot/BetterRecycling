@@ -1,5 +1,7 @@
 # PLAYER
 player.join: {player.join}
 
-# REQUIRED
-required.argument: {required.argument}
+# HELP
+help.intro: {help.intro}
+help.recycle: {help.recycle}
+help.r: {help.recycle}

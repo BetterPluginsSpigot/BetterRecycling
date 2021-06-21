@@ -14,8 +14,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *  Command: /br recycle
- *  Recycle the player's handheld item into its corresponding crafting components.
+ * Command: /br recycle | r
+ * Recycle the player's handheld item into its corresponding crafting components.
  * @author Michiel Proost
  */
 public class RecycleCommand extends PlayerBPCommand {
@@ -50,10 +50,6 @@ public class RecycleCommand extends PlayerBPCommand {
         ItemStack handheld = player.getInventory().getItemInMainHand();
         // Recycle the handheld item.
         ItemStack[] recycled = Recycler.recycle( handheld );
-        // Print recycled components.
-        for(ItemStack stack: recycled){
-            Bukkit.getLogger().info( stack.getType().name() );
-        }
         // Get player's inventory.
         Inventory inventory = player.getInventory();
         // Add recycled components to inventory.
