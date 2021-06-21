@@ -5,9 +5,8 @@ import be.betterplugins.core.messaging.messenger.Messenger;
 import be.dezijwegel.betteryaml.BetterLang;
 import be.dezijwegel.betteryaml.OptionalBetterYaml;
 import io.github.michielproost.betterrecycling.commands.CommandHandler;
-import io.github.michielproost.betterrecycling.commands.OpenCommand;
 import io.github.michielproost.betterrecycling.commands.RecycleCommand;
-import io.github.michielproost.betterrecycling.events.RecycleInventory;
+import io.github.michielproost.betterrecycling.events.EventListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -84,16 +83,17 @@ public class BetterRecycling extends JavaPlugin {
                 new Messenger(
                         localisation.getMessages(),
                         new BPLogger(Level.WARNING),
-                        ChatColor.BLUE + "[BR] " + ChatColor.DARK_GREEN );
+                        ChatColor.BLUE + "[BR] " + ChatColor.DARK_GREEN
+                );
 
         // Register listener.
-        RecycleInventory recycleInventory = new RecycleInventory( messenger );
-        this.getServer().getPluginManager().registerEvents(recycleInventory, this);
+        EventListener eventListener = new EventListener( messenger );
+        this.getServer().getPluginManager().registerEvents(eventListener, this);
 
         // Register commands.
         CommandHandler commandHandler = new CommandHandler(
-                new OpenCommand( messenger, recycleInventory),
-                new RecycleCommand( messenger, recycleInventory )
+                messenger,
+                new RecycleCommand( messenger )
         );
         this.getCommand("betterrecycling").setExecutor( commandHandler );
     }

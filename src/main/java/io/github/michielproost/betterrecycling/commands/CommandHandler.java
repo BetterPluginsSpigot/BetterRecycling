@@ -1,6 +1,7 @@
 package io.github.michielproost.betterrecycling.commands;
 
 import be.betterplugins.core.commands.BPCommand;
+import be.betterplugins.core.messaging.messenger.Messenger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,15 +17,23 @@ import java.util.Map;
  */
 public class CommandHandler implements CommandExecutor {
 
+    // The messenger.
+    private final Messenger messenger;
     // Map every command to its name.
     private final Map<String, BPCommand> commands;
 
-    public CommandHandler(OpenCommand open, RecycleCommand recycle)
+    /**
+     * Create a new CommandHandler.
+     * @param recycle Recycle the player's handheld item.
+     * @param messenger The messenger.
+     */
+    public CommandHandler(Messenger messenger, RecycleCommand recycle)
     {
+        // Initialize the messenger.
+        this.messenger = messenger;
         // Create map.
         this.commands = new HashMap<String, BPCommand>()
         {{
-            put(open.getCommandName(), open);
             put(recycle.getCommandName(), recycle);
         }};
     }
@@ -32,6 +41,7 @@ public class CommandHandler implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args)
     {
+        // An argument has to be given.
         if (args.length > 0)
         {
             // Get the appropriate command.
@@ -40,7 +50,8 @@ public class CommandHandler implements CommandExecutor {
             // Execute command.
             return bpCommand.execute(sender, cmd, args);
         } else {
-            Bukkit.getLogger().info("You need to provide an argument to issue this command.");
+            // No argument was given.
+            messenger.sendMessage(sender, "required.argument");
             return true;
         }
     }

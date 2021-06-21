@@ -1,8 +1,7 @@
 package io.github.michielproost.betterrecycling.commands;
 
-import be.betterplugins.core.commands.BPCommand;
+import be.betterplugins.core.commands.shortcuts.PlayerBPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
-import io.github.michielproost.betterrecycling.events.RecycleInventory;
 import io.github.michielproost.betterrecycling.model.Recycler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -16,13 +15,17 @@ import java.util.List;
 
 /**
  *  Command: /br recycle
- *  Recycle the materials in the recycle inventory into their crafting components.
+ *  Recycle the player's handheld item into its corresponding crafting components.
  * @author Michiel Proost
  */
-public class RecycleCommand extends InventoryCommand {
+public class RecycleCommand extends PlayerBPCommand {
 
-    public RecycleCommand(Messenger messenger, RecycleInventory recycleInventory) {
-        super(messenger, recycleInventory);
+    /**
+     * Recycle the player's handheld item.
+     * @param messenger The messenger.
+     */
+    public RecycleCommand(Messenger messenger) {
+        super( messenger );
     }
 
     @Override
@@ -43,58 +46,10 @@ public class RecycleCommand extends InventoryCommand {
     @Override
     public boolean execute(@NotNull Player player, @NotNull Command cmd, String[] args)
     {
-        // Argument is given.
-        if (args[1] != null)
-        {
-            // Get the appropriate command.
-            String commandName = args[1].toLowerCase();
-
-            // Execute the appropriate command.
-            switch (commandName){
-                // Recycle materials in recycle inventory.
-                case "inventory": {
-                    return recycleInventory();
-                }
-                // Recycle player's handheld item.
-                case "own": {
-                    return recycleHandheld( player );
-                }
-            }
-        } else {
-            // Recycle materials in recycle inventory.
-            return recycleInventory();
-        }
-        // Command was used correctly.
-        return true;
-    }
-
-    /**
-     * Recycle the materials in the recycle inventory.
-     * @return Whether or not the command was used correctly.
-     */
-    private boolean recycleInventory()
-    {
-        // Print contents.
-        System.out.println( recycleInventory );
-        // Recycle the materials.
-        Recycler.recycle( recycleInventory.getNonEmptyStorageContents() );
-        // Command is used correctly.
-        return true;
-    }
-
-    /**
-     * Recycle the player's handheld item and put the materials in its inventory.
-     * @param player The player who issued the command.
-     * @return Whether or not the command was used correctly.
-     */
-    private boolean recycleHandheld( Player player )
-    {
         // Get handheld item.
         ItemStack handheld = player.getInventory().getItemInMainHand();
-        // Convert to array.
-        ItemStack[] handheldArray = {handheld};
         // Recycle the handheld item.
-        ItemStack[] recycled = Recycler.recycle( handheldArray );
+        ItemStack[] recycled = Recycler.recycle( handheld );
         // Print recycled components.
         for(ItemStack stack: recycled){
             Bukkit.getLogger().info( stack.getType().name() );
@@ -103,7 +58,9 @@ public class RecycleCommand extends InventoryCommand {
         Inventory inventory = player.getInventory();
         // Add recycled components to inventory.
         inventory.addItem( recycled );
-        // Command is used correctly.
+        // Remove handheld item from player's inventory.
+        inventory.remove( handheld );
+        // Command was used correctly.
         return true;
     }
 
