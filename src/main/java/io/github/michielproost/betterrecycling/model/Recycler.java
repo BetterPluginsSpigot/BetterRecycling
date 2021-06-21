@@ -3,10 +3,11 @@ package io.github.michielproost.betterrecycling.model;
 import io.github.michielproost.betterrecycling.Util.ArrayUtil;
 import io.github.michielproost.betterrecycling.Util.Conversions;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -42,6 +43,13 @@ public class Recycler {
      */
     public static ItemStack[] recycle( ItemStack stack )
     {
+        // Is the item durable?
+        if (isDurable( stack ))
+        {
+            // Get durability.
+            double durability = getDurability( stack );
+            Bukkit.getLogger().info("Durability of " + stack.getType().name() + ": " + durability);
+        }
         // Store the corresponding crafting components in a list.
         List<ItemStack> recycledList = new ArrayList<>();
         // Get recipes of ItemStack.
@@ -64,6 +72,37 @@ public class Recycler {
         ItemStack[] recycledArray = Conversions.ListToArray( recycledList );
         // Remove empty contents and return array.
         return getNonEmptyStorageContents( recycledArray );
+    }
+
+    /**
+     * Is the ItemStack durable?
+     * @param stack The given ItemStack.
+     * @return Whether or not the ItemStack is durable.
+     */
+    public static boolean isDurable(ItemStack stack)
+    {
+        // Get maximum durability.
+        short maxDurability = stack.getType().getMaxDurability();
+        // The metadata of the ItemStack.
+        ItemMeta itemMeta = stack.getItemMeta();
+        return itemMeta instanceof Damageable && maxDurability > 0;
+    }
+
+    /**
+     * Get the durability of an ItemStack.
+     * @param stack The given ItemStack.
+     * @return The durability of the ItemStack.
+     */
+    public static double getDurability( ItemStack stack )
+    {
+        // Get maximum durability.
+        short maxDurability = stack.getType().getMaxDurability();
+        // Get damageable.
+        Damageable damageable = (Damageable) stack.getItemMeta();
+        // Get damage.
+        int damage = damageable.getDamage();
+        // Calculate & return durability.
+        return 1 - ( (double) damage / (double) maxDurability );
     }
 
     /**
