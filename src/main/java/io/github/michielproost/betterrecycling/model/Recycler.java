@@ -81,7 +81,7 @@ public class Recycler {
         // The given amount of ItemStacks.
         int stackAmount = stack.getAmount();
         // Return whether the ItemStack can be recycled, given the recipe.
-        return stackAmount > recipeResultAmount;
+        return stackAmount >= recipeResultAmount;
     }
 
     /**
