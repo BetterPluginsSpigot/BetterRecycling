@@ -3,12 +3,15 @@ package io.github.michielproost.betterrecycling.commands;
 import be.betterplugins.core.commands.shortcuts.PlayerBPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
 import be.betterplugins.core.messaging.messenger.MsgEntry;
+import io.github.michielproost.betterrecycling.model.RecycleResult;
 import io.github.michielproost.betterrecycling.model.Recycler;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -47,14 +50,22 @@ public class RecycleCommand extends PlayerBPCommand {
     @Override
     public boolean execute(@NotNull Player player, @NotNull Command cmd, String[] args)
     {
+        // Get player's inventory.
+        PlayerInventory inventory = player.getInventory();
         // Get handheld item.
-        ItemStack handheld = player.getInventory().getItemInMainHand();
+        ItemStack handheld = inventory.getItemInMainHand();
+        // Slot number of handheld item.
+        int slot = inventory.getHeldItemSlot();
         // The handheld item's type.
         String handheldTypeName = handheld.getType().name().toLowerCase();
         // Recycle the handheld item.
-        ItemStack[] recycled = Recycler.recycle( handheld );
+        RecycleResult result = Recycler.recycle( handheld );
+        // The resulting components.
+        ItemStack[] components = result.getComponents();
+        // The new handheld item.
+        handheld = result.getLeftOver();
         // Item cannot be recycled.
-        if (recycled.length == 0){
+        if (components.length == 0){
             messenger.sendMessage(
                     player,
                     "fail.recycle",
@@ -62,12 +73,14 @@ public class RecycleCommand extends PlayerBPCommand {
             );
             return true;
         }
-        // Get player's inventory.
-        Inventory inventory = player.getInventory();
         // Add recycled components to inventory.
-        inventory.addItem( recycled );
-        // Remove handheld item from player's inventory.
-        inventory.removeItem( handheld );
+        inventory.addItem( components );
+        // Set new amount of ItemStack
+        if (handheld.getAmount() > 0)
+            inventory.setItem( slot, handheld );
+        // Remove ItemStack.
+        else
+            inventory.setItem( slot, new ItemStack( Material.AIR ) );
         // Command was used correctly.
         return true;
     }

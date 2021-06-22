@@ -1,8 +1,10 @@
 package io.github.michielproost.betterrecycling.model;
 
+import be.betterplugins.core.messaging.messenger.Messenger;
 import io.github.michielproost.betterrecycling.Util.ArrayUtil;
 import io.github.michielproost.betterrecycling.Util.Conversions;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
@@ -18,37 +20,19 @@ import java.util.*;
 public class Recycler {
 
     /**
-     * Recycle the ItemStacks into their corresponding crafting components.
-     * @param input The contents to be recycled.
-     * @return The corresponding crafting components.
-     */
-    public static ItemStack[] recycle( ItemStack[] input )
-    {
-        // Store crafting components.
-        ItemStack[] recycled = new ItemStack[0];
-        // Loop through all ItemStacks in the input.
-        for (ItemStack stack: input)
-        {
-            // Add crafting components to
-            recycled = ArrayUtil.concatenate( recycled, recycle( stack ) );
-        }
-        // Return crafting components.
-        return recycled;
-    }
-
-    /**
      * Recycle an individual ItemStack into its corresponding crafting components.
      * @param stack The contents to be recycled.
-     * @return The corresponding crafting components. Returns null if the item can't be recycled.
+     * @return The result of the recycle operation (leftover + corresponding components).
      */
-    public static ItemStack[] recycle( ItemStack stack )
+    public static RecycleResult recycle( ItemStack stack )
     {
         // Is the item durable?
         if (isDurable( stack ))
         {
             // Get durability.
             double durability = getDurability( stack );
-            // Bukkit.getLogger().info("Durability of " + stack.getType().name() + ": " + durability);
+            // Print durability.
+            Bukkit.getLogger().info("Durability of " + stack.getType().name() + ": " + durability);
         }
         // Store the corresponding crafting components in a list.
         List<ItemStack> recycledList = new ArrayList<>();
@@ -62,16 +46,42 @@ public class Recycler {
             {
                 // Cast to shaped recipe.
                 ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
-                // Get ingredient map.
-                Map<Character, ItemStack> ingredientMap = shapedRecipe.getIngredientMap();
-                // Add crafting components to list.
-                recycledList.addAll( ingredientMap.values() );
+                // Enough resources to recycle?
+                if ( canRecycle( stack, shapedRecipe ) )
+                {
+                    // Remove required amount from ItemStack.
+                    stack.setAmount(
+                            stack.getAmount() - recipe.getResult().getAmount()
+                    );
+                    // Get ingredient map.
+                    Map<Character, ItemStack> ingredientMap = shapedRecipe.getIngredientMap();
+                    // Add crafting components to list.
+                    recycledList.addAll( ingredientMap.values() );
+                }
             }
         }
         // Convert list to array.
         ItemStack[] recycledArray = Conversions.ListToArray( recycledList );
         // Remove empty contents and return array.
-        return getNonEmptyStorageContents( recycledArray );
+        ItemStack[] recycled = getNonEmptyStorageContents( recycledArray );
+        // Return result of recycle operation.
+        return new RecycleResult( stack, recycled );
+    }
+
+    /**
+     * Given a certain recipe, can we recycle the ItemStack into its corresponding components?
+     * @param stack The ItemStack.
+     * @param recipe The given recipe.
+     * @return Whether or not we can recycle the ItemStack into its corresponding components?
+     */
+    public static boolean canRecycle(ItemStack stack, Recipe recipe)
+    {
+        // The required amount of ItemStacks.
+        int recipeResultAmount = recipe.getResult().getAmount();
+        // The given amount of ItemStacks.
+        int stackAmount = stack.getAmount();
+        // Return whether the ItemStack can be recycled, given the recipe.
+        return stackAmount > recipeResultAmount;
     }
 
     /**

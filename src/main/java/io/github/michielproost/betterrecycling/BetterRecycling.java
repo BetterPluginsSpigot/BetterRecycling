@@ -7,6 +7,7 @@ import be.dezijwegel.betteryaml.OptionalBetterYaml;
 import io.github.michielproost.betterrecycling.commands.CommandHandler;
 import io.github.michielproost.betterrecycling.commands.RecycleCommand;
 import io.github.michielproost.betterrecycling.events.EventListener;
+import io.github.michielproost.betterrecycling.model.Recycler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -93,6 +94,7 @@ public class BetterRecycling extends JavaPlugin {
         // Register commands.
         CommandHandler commandHandler = new CommandHandler( messenger );
         this.getCommand("betterrecycling").setExecutor( commandHandler );
+
     }
 
     @Override
