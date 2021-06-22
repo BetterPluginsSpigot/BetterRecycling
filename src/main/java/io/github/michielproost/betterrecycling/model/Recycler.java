@@ -48,7 +48,7 @@ public class Recycler {
         {
             // Get durability.
             double durability = getDurability( stack );
-            Bukkit.getLogger().info("Durability of " + stack.getType().name() + ": " + durability);
+            // Bukkit.getLogger().info("Durability of " + stack.getType().name() + ": " + durability);
         }
         // Store the corresponding crafting components in a list.
         List<ItemStack> recycledList = new ArrayList<>();

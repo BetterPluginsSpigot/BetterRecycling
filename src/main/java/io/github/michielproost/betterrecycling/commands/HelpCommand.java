@@ -2,6 +2,7 @@ package io.github.michielproost.betterrecycling.commands;
 
 import be.betterplugins.core.commands.shortcuts.PlayerBPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
+import be.betterplugins.core.messaging.messenger.MsgEntry;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -46,10 +47,18 @@ public class HelpCommand extends PlayerBPCommand {
     @Override
     public boolean execute(@NotNull Player player, @NotNull Command command, @NotNull String[] strings) {
         // Display intro.
-        messenger.sendMessage(player, "help.intro");
+        messenger.sendMessage(
+                player,
+                "help.intro",
+                new MsgEntry( "<PlayerName>", player.getDisplayName() )
+        );
         // Display explanation of every command.
         for (PlayerBPCommand cmd: commandSet){
-            messenger.sendMessage(player, "help." + cmd.getCommandName());
+            messenger.sendMessage(
+                    player,
+                    "help." + cmd.getCommandName(),
+                    new MsgEntry( "<CommandName>", cmd.getCommandName() )
+            );
         }
         // Command was used correctly.
         return true;

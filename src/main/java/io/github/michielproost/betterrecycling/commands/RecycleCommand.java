@@ -2,6 +2,7 @@ package io.github.michielproost.betterrecycling.commands;
 
 import be.betterplugins.core.commands.shortcuts.PlayerBPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
+import be.betterplugins.core.messaging.messenger.MsgEntry;
 import io.github.michielproost.betterrecycling.model.Recycler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -56,7 +57,8 @@ public class RecycleCommand extends PlayerBPCommand {
         if (recycled.length == 0){
             messenger.sendMessage(
                     player,
-                    "The following item cannot be recycled: " + handheldTypeName
+                    "fail.recycle",
+                    new MsgEntry( "<ItemTypeName>", handheldTypeName )
             );
             return true;
         }
@@ -65,7 +67,7 @@ public class RecycleCommand extends PlayerBPCommand {
         // Add recycled components to inventory.
         inventory.addItem( recycled );
         // Remove handheld item from player's inventory.
-        inventory.remove( handheld );
+        inventory.removeItem( handheld );
         // Command was used correctly.
         return true;
     }

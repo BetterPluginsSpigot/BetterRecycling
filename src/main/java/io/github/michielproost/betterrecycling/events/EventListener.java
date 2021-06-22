@@ -1,6 +1,7 @@
 package io.github.michielproost.betterrecycling.events;
 
 import be.betterplugins.core.messaging.messenger.Messenger;
+import be.betterplugins.core.messaging.messenger.MsgEntry;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -30,7 +31,11 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event)
     {
-        messenger.sendMessage(event.getPlayer(), "player.join");
+        messenger.sendMessage(
+                event.getPlayer(),
+                "player.join",
+                new MsgEntry( "<PlayerName>", event.getPlayer().getDisplayName() )
+        );
     }
 
 }

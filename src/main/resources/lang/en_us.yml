@@ -1,4 +1,6 @@
-player.join: "Welcome to a server that cares about the environment. Recycle away!"
+player.join: "Welcome to BetterRecycling, a server that cares about the environment. Recycle away <PlayerName>!"
 
-help.intro: "Welcome to BetterRecycling. You can find a list of all available commands down below."
-help.recycle: "Recycle | r: The item in your hand is recycled and the corresponding components are put in your inventory."
+help.intro: "Welcome to BetterRecycling <PlayerName>! You can find a list of all available commands down below."
+help.recycle: "<CommandName>: The item in your hand is recycled and the corresponding components are put in your inventory."
+
+fail.recycle: "The following item cannot be recycled: <ItemTypeName>"

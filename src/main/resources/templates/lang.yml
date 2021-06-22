@@ -5,3 +5,6 @@ player.join: {player.join}
 help.intro: {help.intro}
 help.recycle: {help.recycle}
 help.r: {help.recycle}
+
+# FAILURE
+fail.recycle: {fail.recycle}
