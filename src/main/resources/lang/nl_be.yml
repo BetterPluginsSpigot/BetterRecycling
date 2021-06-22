@@ -4,5 +4,6 @@ help.intro: "Welkom bij BetterRecycling <PlayerName>! Je vind een lijst van alle
 help.recycle: "<CommandName>: Het item in je hand wordt gerecycleerd en de bijhorende onderdelen worden gestoken in je inventory."
 
 fail.recycle: "De volgende item kan niet gerecycleerd worden: <ItemTypeName>"
+success.recycle: "<HandheldItemName> was gerecycleerd in <ComponentNames>. Je hebt <NumberOfLeftovers> overschotten."
 
 durable.percentlost: "Het item was duurzaam. Je verloor <PercentLost>% van het gerecycleerd materiaal door willekeurige kans."

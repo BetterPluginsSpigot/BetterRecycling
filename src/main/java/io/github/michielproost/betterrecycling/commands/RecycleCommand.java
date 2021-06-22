@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -65,6 +66,11 @@ public class RecycleCommand extends PlayerBPCommand {
         RecycleResult result = recycler.recycle( handheld, player );
         // The resulting components.
         ItemStack[] components = result.getComponents();
+        // List of component names.
+        List<String> componentNames = new ArrayList<>();
+        for (ItemStack component : components) {
+            componentNames.add( component.getType().name() );
+        }
         // The new handheld item.
         handheld = result.getLeftOver();
         // Item cannot be recycled.
@@ -84,6 +90,14 @@ public class RecycleCommand extends PlayerBPCommand {
             inventory.setItem( slot, new ItemStack( Material.AIR ) );
         // Add recycled components to inventory.
         inventory.addItem( components );
+        // Display message to player that recycling was successful.
+        messenger.sendMessage(
+            player,
+            "success.recycle",
+            new MsgEntry("<HandheldItemName>", handheld.getType().name()),
+            new MsgEntry( "<ComponentNames>", componentNames.toString() ),
+            new MsgEntry( "<NumberOfLeftovers>", handheld.getAmount() )
+        );
         // Command was used correctly.
         return true;
     }

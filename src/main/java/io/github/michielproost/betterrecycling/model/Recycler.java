@@ -23,7 +23,10 @@ public class Recycler {
     // The messenger.
     private final Messenger messenger;
 
-    // Create a new recycler.
+    /**
+     * Create a new Recycler.
+     * @param messenger The messenger.
+     */
     public Recycler( Messenger messenger ){
         this.messenger = messenger;
     }
