@@ -1,10 +1,7 @@
 package io.github.michielproost.betterrecycling.model;
 
-import be.betterplugins.core.messaging.messenger.Messenger;
-import io.github.michielproost.betterrecycling.Util.ArrayUtil;
 import io.github.michielproost.betterrecycling.Util.Conversions;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
@@ -26,13 +23,19 @@ public class Recycler {
      */
     public static RecycleResult recycle( ItemStack stack )
     {
+        // Default durability.
+        double durability = 1.0;
         // Is the item durable?
         if (isDurable( stack ))
         {
             // Get durability.
-            double durability = getDurability( stack );
-            // Print durability.
-            Bukkit.getLogger().info("Durability of " + stack.getType().name() + ": " + durability);
+            durability = getDurability( stack );
+            // Get damageable.
+            Damageable damageable = (Damageable) stack.getItemMeta();
+            // Set damage to zero.
+            damageable.setDamage( 0 );
+            // Set new ItemMeta.
+            stack.setItemMeta( (ItemMeta) damageable );
         }
         // Store the corresponding crafting components in a list.
         List<ItemStack> recycledList = new ArrayList<>();
@@ -56,6 +59,12 @@ public class Recycler {
                     // Get ingredient map.
                     Map<Character, ItemStack> ingredientMap = shapedRecipe.getIngredientMap();
                     // Add crafting components to list.
+                    for (ItemStack component: ingredientMap.values())
+                    {
+                        // Higher durability -> higher chance of getting component.
+                        if (Math.random() <= durability || component == null)
+                            recycledList.add( component );
+                    }
                     recycledList.addAll( ingredientMap.values() );
                 }
             }
