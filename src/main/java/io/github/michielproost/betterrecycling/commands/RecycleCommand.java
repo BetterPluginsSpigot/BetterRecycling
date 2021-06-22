@@ -24,12 +24,15 @@ import java.util.List;
  */
 public class RecycleCommand extends PlayerBPCommand {
 
+    private final Recycler recycler;
+
     /**
      * Recycle the player's handheld item.
      * @param messenger The messenger.
      */
     public RecycleCommand(Messenger messenger) {
         super( messenger );
+        this.recycler = new Recycler( messenger );
     }
 
     @Override
@@ -59,7 +62,7 @@ public class RecycleCommand extends PlayerBPCommand {
         // The handheld item's type.
         String handheldTypeName = handheld.getType().name().toLowerCase();
         // Recycle the handheld item.
-        RecycleResult result = Recycler.recycle( handheld );
+        RecycleResult result = recycler.recycle( handheld, player );
         // The resulting components.
         ItemStack[] components = result.getComponents();
         // The new handheld item.
@@ -73,14 +76,14 @@ public class RecycleCommand extends PlayerBPCommand {
             );
             return true;
         }
-        // Add recycled components to inventory.
-        inventory.addItem( components );
         // Set new amount of ItemStack
         if (handheld.getAmount() > 0)
             inventory.setItem( slot, handheld );
         // Remove ItemStack.
         else
             inventory.setItem( slot, new ItemStack( Material.AIR ) );
+        // Add recycled components to inventory.
+        inventory.addItem( components );
         // Command was used correctly.
         return true;
     }

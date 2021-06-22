@@ -1,10 +1,14 @@
 package io.github.michielproost.betterrecycling.model;
 
+import be.betterplugins.core.messaging.messenger.Messenger;
+import be.betterplugins.core.messaging.messenger.MsgEntry;
 import io.github.michielproost.betterrecycling.Util.Conversions;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -16,12 +20,21 @@ import java.util.*;
  */
 public class Recycler {
 
+    // The messenger.
+    private final Messenger messenger;
+
+    // Create a new recycler.
+    public Recycler( Messenger messenger ){
+        this.messenger = messenger;
+    }
+
     /**
      * Recycle an individual ItemStack into its corresponding crafting components.
      * @param stack The contents to be recycled.
+     * @param player The player.
      * @return The result of the recycle operation (leftover + corresponding components).
      */
-    public static RecycleResult recycle( ItemStack stack )
+    public RecycleResult recycle(ItemStack stack, Player player)
     {
         // Default durability.
         double durability = 1.0;
@@ -41,6 +54,8 @@ public class Recycler {
         List<ItemStack> recycledList = new ArrayList<>();
         // Get recipes of ItemStack.
         List<Recipe> recipes = Bukkit.getRecipesFor( stack );
+        // Counters.
+        short countExpectedComponents = 0;
         // Loop through all the recipes.
         for (Recipe recipe: recipes)
         {
@@ -64,8 +79,33 @@ public class Recycler {
                         // Higher durability -> higher chance of getting component.
                         if (Math.random() <= durability || component == null)
                             recycledList.add( component );
+                        if (component != null)
+                            countExpectedComponents++;
                     }
-                    recycledList.addAll( ingredientMap.values() );
+                }
+            }
+            // Shapeless recipe (arrangement doesn't matter).
+            if (recipe instanceof ShapelessRecipe)
+            {
+                ShapelessRecipe shapelessRecipe = (ShapelessRecipe) recipe;
+                // Enough resources to recycle?
+                if ( canRecycle( stack, shapelessRecipe ))
+                {
+                    // Remove required amount from ItemStack.
+                    stack.setAmount(
+                            stack.getAmount() - recipe.getResult().getAmount()
+                    );
+                    // Get ingredient list.
+                    List<ItemStack> ingredientList = shapelessRecipe.getIngredientList();
+                    // Add crafting components to list.
+                    for (ItemStack component: ingredientList)
+                    {
+                        // Higher durability -> higher chance of getting component.
+                        if (Math.random() <= durability || component == null)
+                            recycledList.add( component );
+                        if (component != null)
+                            countExpectedComponents++;
+                    }
                 }
             }
         }
@@ -73,6 +113,16 @@ public class Recycler {
         ItemStack[] recycledArray = Conversions.ListToArray( recycledList );
         // Remove empty contents and return array.
         ItemStack[] recycled = getNonEmptyStorageContents( recycledArray );
+        // Is item durable?
+        if (durability < 1.0) {
+            double percentLostDouble = 1.0 - (double) recycled.length / (double) countExpectedComponents;
+            int percentLostInt = (int) (percentLostDouble * 100.0);
+            this.messenger.sendMessage(
+                    player,
+                    "durable.percentlost",
+                    new MsgEntry( "<PercentLost>", percentLostInt)
+            );
+        }
         // Return result of recycle operation.
         return new RecycleResult( stack, recycled );
     }
