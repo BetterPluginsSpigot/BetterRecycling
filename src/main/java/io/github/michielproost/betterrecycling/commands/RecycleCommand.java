@@ -17,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Command: /br recycle | r
@@ -66,11 +68,12 @@ public class RecycleCommand extends PlayerBPCommand {
         RecycleResult result = recycler.recycle( handheld, player );
         // The resulting components.
         ItemStack[] components = result.getComponents();
-        // List of component names.
-        List<String> componentNames = new ArrayList<>();
-        for (ItemStack component : components) {
-            componentNames.add( component.getType().name() );
-        }
+        // Group material types.
+        Map<String, Integer> componentMap = Recycler.groupMaterialTypes( components );
+        // Convert to string.
+        String componentMapToString = componentMap.keySet().stream()
+                .map( key -> componentMap.get( key ) + " " + key )
+                .collect(Collectors.joining(", ", "[", "]"));
         // The new handheld item.
         handheld = result.getLeftOver();
         // Item cannot be recycled.
@@ -94,8 +97,8 @@ public class RecycleCommand extends PlayerBPCommand {
         messenger.sendMessage(
             player,
             "success.recycle",
-            new MsgEntry("<HandheldItemName>", handheld.getType().name()),
-            new MsgEntry( "<ComponentNames>", componentNames.toString() ),
+            new MsgEntry("<HandheldItemName>", handheldTypeName ),
+            new MsgEntry( "<ComponentNames>", componentMapToString ),
             new MsgEntry( "<NumberOfLeftovers>", handheld.getAmount() )
         );
         // Command was used correctly.

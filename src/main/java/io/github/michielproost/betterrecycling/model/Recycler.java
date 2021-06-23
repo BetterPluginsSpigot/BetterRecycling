@@ -189,4 +189,29 @@ public class Recycler {
                         .toArray(ItemStack[]::new);
     }
 
+    /**
+     * Group material types together in a map based on the received ItemStacks.
+     * @param itemStacks The stacks to group together.
+     * @return The resulting map.
+     */
+    public static Map<String, Integer> groupMaterialTypes(ItemStack[] itemStacks)
+    {
+        // Map that links material types to their amount present in the ItemStacks.
+        Map<String, Integer> materialAmountMap = new HashMap<>();
+        // Loop through the ItemStacks.
+        for (ItemStack stack: itemStacks)
+        {
+            // The material type.
+            String type = stack.getType().name().toLowerCase();
+            // Add one to amount for that specific type.
+            if ( materialAmountMap.containsKey( type ) )
+                materialAmountMap.put( type, materialAmountMap.get( type ) + 1 );
+            // New type in map.
+            else
+                materialAmountMap.put( type, 1 );
+        }
+        // Return the map.
+        return materialAmountMap;
+    }
+
 }
