@@ -12,3 +12,6 @@ success.recycle: {success.recycle}
 
 # DURABLE ITEMS
 durable.percentlost: {durable.percentlost}
+
+# PERMISSION
+permission.required: {permission.required}

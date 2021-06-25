@@ -7,3 +7,5 @@ fail.recycle: "De volgende item kan niet gerecycleerd worden: <ItemTypeName>"
 success.recycle: "<HandheldItemName> was gerecycleerd in <ComponentNames>. Je hebt <NumberOfLeftovers> overschotten."
 
 durable.percentlost: "Het item was duurzaam. Je verloor <PercentLost>% van het gerecycleerd materiaal door willekeurige kans."
+
+permission.required: "Je hebt geen toestemming om het volgende commando uit te voeren: <Command>"

@@ -57,7 +57,7 @@ public class HelpCommand extends PlayerBPCommand {
             messenger.sendMessage(
                     player,
                     "help." + cmd.getCommandName(),
-                    new MsgEntry( "<CommandName>", cmd.getCommandName() )
+                    new MsgEntry( "<Command>", "/br " + cmd.getCommandName() )
             );
         }
         // Command was used correctly.

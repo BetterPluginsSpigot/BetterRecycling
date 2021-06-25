@@ -3,6 +3,7 @@ package io.github.michielproost.betterrecycling.commands;
 import be.betterplugins.core.commands.BPCommand;
 import be.betterplugins.core.commands.shortcuts.PlayerBPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
+import be.betterplugins.core.messaging.messenger.MsgEntry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -58,6 +59,17 @@ public class CommandHandler implements CommandExecutor {
         {
             // Get appropriate command.
             PlayerBPCommand playerBPCommand = commands.get( commandName );
+            // Has required permission.
+            if (sender.hasPermission( playerBPCommand.getPermission( ) ) )
+                // Execute command.
+                return playerBPCommand.execute( sender, cmd, args );
+            else
+                messenger.sendMessage(
+                        sender,
+                        "permission.required",
+                        new MsgEntry( "<Command>", "/br " + commandName )
+                );
+
             // Execute command.
             playerBPCommand.execute(sender, cmd, args);
         }

@@ -7,3 +7,5 @@ fail.recycle: "The following item cannot be recycled: <ItemTypeName>"
 success.recycle:  "<HandheldItemName> was recycled into <ComponentNames>. You have <NumberOfLeftovers> leftovers."
 
 durable.percentlost: "The item was durable. You lost <PercentLost>% of recycled components by random chance."
+
+permission.required: "You don't have permission to execute the following command: <Command>"
