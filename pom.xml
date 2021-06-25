@@ -8,6 +8,11 @@
     <artifactId>BetterRecycling</artifactId>
     <version>1.0.0</version>
 
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
     <repositories>
 
         <!-- SPIGOT -->
@@ -16,9 +21,29 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
 
+        <!-- JITPACK -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+
     </repositories>
 
     <dependencies>
+
+        <!-- BETTERCORE -->
+        <dependency>
+            <groupId>com.github.betterpluginsspigot</groupId>
+            <artifactId>bettercore</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <!-- BetterYAML -->
+        <dependency>
+            <groupId>com.github.BetterPluginsSpigot</groupId>
+            <artifactId>BetterYaml</artifactId>
+            <version>1.0.6</version>
+        </dependency>
 
         <!-- SPIGOT -->
         <dependency>
@@ -28,6 +53,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- MOCKBUKKIT -->
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.16</artifactId>
@@ -35,17 +61,56 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- JUNIT -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>[4.13.1,)</version>
         </dependency>
 
+        <!-- BSTATS -->
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>2.2.1</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <configuration>
+                    <minimizeJar>true</minimizeJar>
+                    <relocations>
+                        <relocation>
+                            <pattern>be.betterplugins.core</pattern>
+                            <shadedPattern>io.github.MichielProost.BetterRecycling.shade.core</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>be.dezijwegel.betteryaml</pattern>
+                            <shadedPattern>io.github.MichielProost.BetterRecycling.shade.betteryaml</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>io.github.MichielProost.BetterRecycling.shade.bstats</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

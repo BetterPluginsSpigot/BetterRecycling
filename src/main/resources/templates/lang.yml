@@ -1,0 +1,17 @@
+# PLAYER
+player.join: {player.join}
+
+# HELP
+help.intro: {help.intro}
+help.recycle: {help.recycle}
+help.r: {help.recycle}
+
+# FAILURE
+fail.recycle: {fail.recycle}
+success.recycle: {success.recycle}
+
+# DURABLE ITEMS
+durable.percentlost: {durable.percentlost}
+
+# PERMISSION
+permission.required: {permission.required}

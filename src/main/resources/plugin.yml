@@ -3,6 +3,20 @@ author: MichielProost
 main: io.github.michielproost.betterrecycling.BetterRecycling
 version: 1.0.0
 commands:
-  recycle:
-    description: Opens a GUI in which you can recycle materials into their crafting components.
-    usage: Issue the command by typing /recycle in the console.
+  betterrecycling:
+    description: BetterRecycling commands
+    permission: betterrecycling
+    usage: Issue the command by typing /betterrecycling in the console.
+    aliases: [br]
+permissions:
+  betterrecycling:
+    default: true
+  betterrecycling.*:
+    default: op
+    children:
+      betterrecycling.help: true
+      betterrecycling.recycle: true
+  betterrecycling.help:
+    default: true
+  betterrecycling.recycle:
+    default: op

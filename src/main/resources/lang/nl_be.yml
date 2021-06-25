@@ -1,0 +1,11 @@
+player.join: "Welkom bij BetterRecycling, een server die geeft om het milieu. Recyclen maar <PlayerName>!"
+
+help.intro: "Welkom bij BetterRecycling <PlayerName>! Je vind een lijst van alle mogelijke commando's beneden."
+help.recycle: "<Command>: Het item in je hand wordt gerecycleerd en de bijhorende onderdelen worden gestoken in je inventory."
+
+fail.recycle: "De volgende item kan niet gerecycleerd worden: <ItemTypeName>"
+success.recycle: "<HandheldItemName> was gerecycleerd in <ComponentNames>. Je hebt <NumberOfLeftovers> overschotten."
+
+durable.percentlost: "Het item was duurzaam. Je verloor <PercentLost>% van het gerecycleerd materiaal door willekeurige kans."
+
+permission.required: "Je hebt geen toestemming om het volgende commando uit te voeren: <Command>"

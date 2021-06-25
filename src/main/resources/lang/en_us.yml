@@ -1,0 +1,11 @@
+player.join: "Welcome to BetterRecycling, a server that cares about the environment. Recycle away <PlayerName>!"
+
+help.intro: "Welcome to BetterRecycling <PlayerName>! You can find a list of all available commands down below."
+help.recycle: "<Command>: The item in your hand is recycled and the corresponding components are put in your inventory."
+
+fail.recycle: "The following item cannot be recycled: <ItemTypeName>"
+success.recycle:  "<HandheldItemName> was recycled into <ComponentNames>. You have <NumberOfLeftovers> leftovers."
+
+durable.percentlost: "The item was durable. You lost <PercentLost>% of recycled components by random chance."
+
+permission.required: "You don't have permission to execute the following command: <Command>"
