@@ -64,6 +64,8 @@ public class RecycleCommand extends PlayerBPCommand {
         int slot = inventory.getHeldItemSlot();
         // The handheld item's type.
         String handheldTypeName = handheld.getType().name().toLowerCase();
+        // The handheld item's amount.
+        int handheldAmount = handheld.getAmount();
         // Recycle the handheld item.
         RecycleResult result = recycler.recycle( handheld, player );
         // The resulting components.
@@ -97,7 +99,7 @@ public class RecycleCommand extends PlayerBPCommand {
         messenger.sendMessage(
             player,
             "success.recycle",
-            new MsgEntry("<HandheldItemName>", handheldTypeName ),
+            new MsgEntry("<HandheldItemName>", handheldAmount + " " + handheldTypeName ),
             new MsgEntry( "<ComponentNames>", componentMapToString ),
             new MsgEntry( "<NumberOfLeftovers>", handheld.getAmount() )
         );

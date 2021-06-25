@@ -68,6 +68,14 @@
             <version>[4.13.1,)</version>
         </dependency>
 
+        <!-- BSTATS -->
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>2.2.1</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -86,6 +94,10 @@
                         <relocation>
                             <pattern>be.dezijwegel.betteryaml</pattern>
                             <shadedPattern>io.github.MichielProost.BetterRecycling.shade.betteryaml</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>io.github.MichielProost.BetterRecycling.shade.bstats</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

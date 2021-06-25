@@ -8,6 +8,7 @@ import io.github.michielproost.betterrecycling.commands.CommandHandler;
 import io.github.michielproost.betterrecycling.commands.RecycleCommand;
 import io.github.michielproost.betterrecycling.events.EventListener;
 import io.github.michielproost.betterrecycling.model.Recycler;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -57,6 +58,10 @@ public class BetterRecycling extends JavaPlugin {
     public void onEnable()
     {
         super.onEnable();
+
+        // Plugin ID for bStats.
+        int pluginId = 11816;
+        Metrics metrics = new Metrics(this, pluginId );
 
         // Get configuration from BetterYaml.
         OptionalBetterYaml optionalConfig = new OptionalBetterYaml("config.yml", this);
