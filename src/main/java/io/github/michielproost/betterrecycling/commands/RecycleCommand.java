@@ -3,6 +3,7 @@ package io.github.michielproost.betterrecycling.commands;
 import be.betterplugins.core.commands.shortcuts.PlayerBPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
 import be.betterplugins.core.messaging.messenger.MsgEntry;
+import io.github.michielproost.betterrecycling.Util.ItemStackUtil;
 import io.github.michielproost.betterrecycling.model.RecycleResult;
 import io.github.michielproost.betterrecycling.model.Recycler;
 import org.bukkit.Bukkit;
@@ -71,7 +72,7 @@ public class RecycleCommand extends PlayerBPCommand {
         // The resulting components.
         ItemStack[] components = result.getComponents();
         // Group material types.
-        Map<String, Integer> componentMap = Recycler.groupMaterialTypes( components );
+        Map<String, Integer> componentMap = ItemStackUtil.groupMaterialTypes( components );
         // Convert to string.
         String componentMapToString = componentMap.keySet().stream()
                 .map( key -> componentMap.get( key ) + " " + key )
