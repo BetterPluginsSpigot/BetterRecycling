@@ -6,16 +6,13 @@ import be.betterplugins.core.messaging.messenger.MsgEntry;
 import io.github.michielproost.betterrecycling.Util.ItemStackUtil;
 import io.github.michielproost.betterrecycling.model.RecycleResult;
 import io.github.michielproost.betterrecycling.model.Recycler;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +56,7 @@ public class RecycleCommand extends PlayerBPCommand {
     {
         // Get player's inventory.
         PlayerInventory inventory = player.getInventory();
+
         // Get handheld item.
         ItemStack handheld = inventory.getItemInMainHand();
         // Slot number of handheld item.
@@ -67,6 +65,7 @@ public class RecycleCommand extends PlayerBPCommand {
         String handheldTypeName = handheld.getType().name().toLowerCase();
         // The handheld item's amount.
         int handheldAmount = handheld.getAmount();
+
         // Recycle the handheld item.
         RecycleResult result = recycler.recycle( handheld, player );
         // The resulting components.
@@ -77,6 +76,7 @@ public class RecycleCommand extends PlayerBPCommand {
         String componentMapToString = componentMap.keySet().stream()
                 .map( key -> componentMap.get( key ) + " " + key )
                 .collect(Collectors.joining(", ", "[", "]"));
+
         // The new handheld item.
         handheld = result.getLeftOver();
         // Item cannot be recycled.
@@ -88,7 +88,8 @@ public class RecycleCommand extends PlayerBPCommand {
             );
             return true;
         }
-        // Set new amount of ItemStack
+
+        // Set new amount of ItemStack.
         if (handheld.getAmount() > 0)
             inventory.setItem( slot, handheld );
         // Remove ItemStack.
@@ -104,6 +105,7 @@ public class RecycleCommand extends PlayerBPCommand {
             new MsgEntry( "<ComponentNames>", componentMapToString ),
             new MsgEntry( "<NumberOfLeftovers>", handheld.getAmount() )
         );
+
         // Command was used correctly.
         return true;
     }

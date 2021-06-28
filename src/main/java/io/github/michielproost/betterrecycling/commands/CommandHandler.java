@@ -1,6 +1,5 @@
 package io.github.michielproost.betterrecycling.commands;
 
-import be.betterplugins.core.commands.BPCommand;
 import be.betterplugins.core.commands.shortcuts.PlayerBPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
 import be.betterplugins.core.messaging.messenger.MsgEntry;
@@ -29,11 +28,12 @@ public class CommandHandler implements CommandExecutor {
      * Create a new CommandHandler.
      * @param messenger The messenger.
      */
-    public CommandHandler(Messenger messenger)
+    public CommandHandler( Messenger messenger )
     {
         // Initialize the messenger.
         this.messenger = messenger;
 
+        // Recycle command.
         PlayerBPCommand recycle = new RecycleCommand( messenger );
 
         // Create map.
@@ -41,21 +41,25 @@ public class CommandHandler implements CommandExecutor {
         {{
             // RecycleCommand:
             put(recycle.getCommandName(), recycle);
-            for (String alias: recycle.getAliases()){
+            for ( String alias: recycle.getAliases() ){
                 put(alias, recycle);
             }
         }};
 
+        // Help command.
         this.helpCommand = new HelpCommand( messenger, commands );
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args)
+    public boolean onCommand(@NotNull CommandSender sender,
+                             @NotNull Command cmd,
+                             @NotNull String label,
+                             String[] args)
     {
         // Get name of desired command.
         String commandName = args.length == 0 ? "help" : args[0].toLowerCase();
         // Check if command exists.
-        if (commands.containsKey( commandName ))
+        if ( commands.containsKey( commandName ) )
         {
             // Get appropriate command.
             PlayerBPCommand playerBPCommand = commands.get( commandName );
@@ -71,7 +75,7 @@ public class CommandHandler implements CommandExecutor {
                 );
 
             // Execute command.
-            playerBPCommand.execute(sender, cmd, args);
+            playerBPCommand.execute( sender, cmd, args );
         }
         else
         {

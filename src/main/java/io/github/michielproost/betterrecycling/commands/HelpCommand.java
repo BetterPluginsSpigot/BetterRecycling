@@ -22,7 +22,7 @@ public class HelpCommand extends PlayerBPCommand {
      * Displays manual for BetterRecycling commands.
      * @param messenger The messenger.
      */
-    public HelpCommand(Messenger messenger, Map<String, PlayerBPCommand> commands) {
+    public HelpCommand( Messenger messenger, Map<String, PlayerBPCommand> commands ) {
         // Initialize messenger.
         super(messenger);
         // Set of BetterRecycling commands.
