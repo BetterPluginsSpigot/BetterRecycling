@@ -62,59 +62,64 @@ public class Recycler {
         List<Recipe> recipes = Bukkit.getRecipesFor( stack );
         // Counters.
         short countExpectedComponents = 0;
-        // Loop through all the recipes.
-        for (Recipe recipe: recipes)
-        {
-            // Shaped (normal) crafting recipe.
-            if (recipe instanceof ShapedRecipe)
+        // Amount of items recycled.
+        int recycledAmount;
+        do {
+            recycledAmount = recycledList.size();
+            // Loop through all the recipes.
+            for (Recipe recipe: recipes)
             {
-                // Cast to shaped recipe.
-                ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
-                // Enough resources to recycle?
-                if ( canRecycle( stack, shapedRecipe ) )
+                // Shaped (normal) crafting recipe.
+                if (recipe instanceof ShapedRecipe)
                 {
-                    // Remove required amount from ItemStack.
-                    stack.setAmount(
-                            stack.getAmount() - recipe.getResult().getAmount()
-                    );
-                    // Get ingredient map.
-                    Map<Character, ItemStack> ingredientMap = shapedRecipe.getIngredientMap();
-                    // Add crafting components to list.
-                    for (ItemStack component: ingredientMap.values())
+                    // Cast to shaped recipe.
+                    ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
+                    // Enough resources to recycle?
+                    if ( canRecycle( stack, shapedRecipe ) )
                     {
-                        // Higher durability -> higher chance of getting component.
-                        if (Math.random() <= durability || component == null)
-                            recycledList.add( component );
-                        if (component != null)
-                            countExpectedComponents++;
+                        // Remove required amount from ItemStack.
+                        stack.setAmount(
+                                stack.getAmount() - recipe.getResult().getAmount()
+                        );
+                        // Get ingredient map.
+                        Map<Character, ItemStack> ingredientMap = shapedRecipe.getIngredientMap();
+                        // Add crafting components to list.
+                        for (ItemStack component: ingredientMap.values())
+                        {
+                            // Higher durability -> higher chance of getting component.
+                            if (Math.random() <= durability || component == null)
+                                recycledList.add( component );
+                            if (component != null)
+                                countExpectedComponents++;
+                        }
+                    }
+                }
+                // Shapeless recipe (arrangement doesn't matter).
+                if (recipe instanceof ShapelessRecipe)
+                {
+                    ShapelessRecipe shapelessRecipe = (ShapelessRecipe) recipe;
+                    // Enough resources to recycle?
+                    if ( canRecycle( stack, shapelessRecipe ))
+                    {
+                        // Remove required amount from ItemStack.
+                        stack.setAmount(
+                                stack.getAmount() - recipe.getResult().getAmount()
+                        );
+                        // Get ingredient list.
+                        List<ItemStack> ingredientList = shapelessRecipe.getIngredientList();
+                        // Add crafting components to list.
+                        for (ItemStack component: ingredientList)
+                        {
+                            // Higher durability -> higher chance of getting component.
+                            if (Math.random() <= durability || component == null)
+                                recycledList.add( component );
+                            if (component != null)
+                                countExpectedComponents++;
+                        }
                     }
                 }
             }
-            // Shapeless recipe (arrangement doesn't matter).
-            if (recipe instanceof ShapelessRecipe)
-            {
-                ShapelessRecipe shapelessRecipe = (ShapelessRecipe) recipe;
-                // Enough resources to recycle?
-                if ( canRecycle( stack, shapelessRecipe ))
-                {
-                    // Remove required amount from ItemStack.
-                    stack.setAmount(
-                            stack.getAmount() - recipe.getResult().getAmount()
-                    );
-                    // Get ingredient list.
-                    List<ItemStack> ingredientList = shapelessRecipe.getIngredientList();
-                    // Add crafting components to list.
-                    for (ItemStack component: ingredientList)
-                    {
-                        // Higher durability -> higher chance of getting component.
-                        if (Math.random() <= durability || component == null)
-                            recycledList.add( component );
-                        if (component != null)
-                            countExpectedComponents++;
-                    }
-                }
-            }
-        }
+        } while (recycledAmount != recycledList.size());
         // Convert list to array.
         ItemStack[] recycledArray = Conversions.ListToArray( recycledList );
         // Remove empty contents and return array.
