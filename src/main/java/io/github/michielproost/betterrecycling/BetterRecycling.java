@@ -4,11 +4,13 @@ import be.betterplugins.core.messaging.logging.BPLogger;
 import be.betterplugins.core.messaging.messenger.Messenger;
 import be.dezijwegel.betteryaml.BetterLang;
 import be.dezijwegel.betteryaml.OptionalBetterYaml;
+import io.github.michielproost.betterrecycling.Util.UpdateChecker;
 import io.github.michielproost.betterrecycling.commands.CommandHandler;
 import io.github.michielproost.betterrecycling.commands.RecycleCommand;
 import io.github.michielproost.betterrecycling.events.EventListener;
 import io.github.michielproost.betterrecycling.model.Recycler;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -81,6 +83,10 @@ public class BetterRecycling extends JavaPlugin {
         // The configuration.
         YamlConfiguration config = loadResult.get();
 
+        // Custom bStats charts.
+        String language = config.getString( "language" );
+        metrics.addCustomChart( new SimplePie("language",()-> language) );
+
         // Get localisation.
         BetterLang localisation = getLocalisation( config );
 
@@ -99,6 +105,10 @@ public class BetterRecycling extends JavaPlugin {
         // Register commands.
         CommandHandler commandHandler = new CommandHandler( messenger );
         this.getCommand("betterrecycling").setExecutor( commandHandler );
+
+        // Start UpdateChecker in a seperate thread to not completely block the server.
+        Thread updateChecker = new UpdateChecker(this);
+        updateChecker.start();
 
     }
 
