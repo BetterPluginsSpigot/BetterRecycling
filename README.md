@@ -16,5 +16,5 @@ Welcome to BetterRecycling, a plugin that cares about the environment! Recycle h
 ## BetterRecycling versions with key upgrades
 | BetterRecycling Version        | Key upgrades           | 
 | ------------- |:-------------:| 
-| V1.0.0    | Initial version | 
-| V1.0.1    | Version check + Recycle a MAXIMUM amount of items in hand. In the previous version, only a select number of items in hand were recycled depending on the found recipes. | 
+| [V1.0.0](https://github.com/BetterPluginsSpigot/BetterRecycling/tree/v1.0.0)    | Initial version | 
+| [V1.0.1](https://github.com/BetterPluginsSpigot/BetterRecycling/tree/v1.0.1)    | Version check + Recycle a MAXIMUM amount of items in hand. In the previous version, only a select number of items in hand were recycled depending on the found recipes. | 
