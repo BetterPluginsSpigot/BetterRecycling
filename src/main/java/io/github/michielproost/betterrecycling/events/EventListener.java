@@ -18,7 +18,7 @@ public class EventListener implements Listener {
 
     /**
      * Create a new EventListener.
-     * @param messenger The YAML configuration.
+     * @param config The YAML configuration.
      * @param messenger The messenger.
      */
     public EventListener(Messenger messenger, YamlConfiguration config)

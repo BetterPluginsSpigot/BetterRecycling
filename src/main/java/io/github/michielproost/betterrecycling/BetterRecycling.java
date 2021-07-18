@@ -56,7 +56,7 @@ public class BetterRecycling extends JavaPlugin {
         OptionalBetterYaml optionalConfig = new OptionalBetterYaml("config.yml", this);
         Optional<YamlConfiguration> loadResult = optionalConfig.getYamlConfiguration();
 
-        // Configuration is found.
+        // Configuration is not found.
         if ( !loadResult.isPresent() )
         {
             // Configuration was not found.
