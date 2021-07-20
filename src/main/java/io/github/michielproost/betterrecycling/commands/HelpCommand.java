@@ -45,21 +45,34 @@ public class HelpCommand extends PlayerBPCommand {
     }
 
     @Override
-    public boolean execute(@NotNull Player player, @NotNull Command command, @NotNull String[] strings) {
+    public boolean execute(@NotNull Player player, @NotNull Command command, @NotNull String[] args) {
+        // Has required permission.
+        if ( !player.hasPermission( getPermission( ) ) ) {
+            messenger.sendMessage(
+                    player,
+                    "permission.required",
+                    new MsgEntry( "<Command>", "/recycle " + getCommandName() )
+            );
+            return true;
+        }
+
         // Display intro.
         messenger.sendMessage(
                 player,
                 "help.intro",
                 new MsgEntry( "<PlayerName>", player.getDisplayName() )
         );
+
         // Display explanation of every command.
         for (PlayerBPCommand cmd: commandSet){
+            String subCommand = cmd.getCommandName().equals( "recycle" ) ? "" : " " + cmd.getCommandName();
             messenger.sendMessage(
                     player,
                     "help." + cmd.getCommandName(),
-                    new MsgEntry( "<Command>", "/br " + cmd.getCommandName() )
+                    new MsgEntry( "<Command>", "/recycle" + subCommand)
             );
         }
+
         // Command was used correctly.
         return true;
     }

@@ -6,9 +6,7 @@ import be.dezijwegel.betteryaml.BetterLang;
 import be.dezijwegel.betteryaml.OptionalBetterYaml;
 import io.github.michielproost.betterrecycling.Util.UpdateChecker;
 import io.github.michielproost.betterrecycling.commands.CommandHandler;
-import io.github.michielproost.betterrecycling.commands.RecycleCommand;
 import io.github.michielproost.betterrecycling.events.EventListener;
-import io.github.michielproost.betterrecycling.model.Recycler;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
@@ -45,17 +43,6 @@ public class BetterRecycling extends JavaPlugin {
         super(loader, description, dataFolder, file);
     }
 
-    /**
-     * Get BetterLang localization.
-     * @param configuration The YAML configuration from BetterYaml.
-     * @return The BetterLang localization.
-     */
-    public BetterLang getLocalisation(YamlConfiguration configuration)
-    {
-        String language = configuration.getString("language");
-        return new BetterLang("lang.yml", language + ".yml", this);
-    }
-
     @Override
     public void onEnable()
     {
@@ -69,7 +56,7 @@ public class BetterRecycling extends JavaPlugin {
         OptionalBetterYaml optionalConfig = new OptionalBetterYaml("config.yml", this);
         Optional<YamlConfiguration> loadResult = optionalConfig.getYamlConfiguration();
 
-        // Configuration is found.
+        // Configuration is not found.
         if ( !loadResult.isPresent() )
         {
             // Configuration was not found.
@@ -83,12 +70,14 @@ public class BetterRecycling extends JavaPlugin {
         // The configuration.
         YamlConfiguration config = loadResult.get();
 
-        // Custom bStats charts.
+        // The language.
         String language = config.getString( "language" );
-        metrics.addCustomChart( new SimplePie("language",()-> language) );
 
         // Get localisation.
-        BetterLang localisation = getLocalisation( config );
+        BetterLang localisation = new BetterLang("lang.yml", language + ".yml", this);
+
+        // Custom bStats charts.
+        metrics.addCustomChart( new SimplePie("language",()-> language) );
 
         // Create messenger.
         Messenger messenger =
@@ -99,14 +88,14 @@ public class BetterRecycling extends JavaPlugin {
                 );
 
         // Register listener.
-        EventListener eventListener = new EventListener( messenger );
+        EventListener eventListener = new EventListener( messenger, config );
         this.getServer().getPluginManager().registerEvents(eventListener, this);
 
         // Register commands.
         CommandHandler commandHandler = new CommandHandler( messenger );
         this.getCommand("betterrecycling").setExecutor( commandHandler );
 
-        // Start UpdateChecker in a seperate thread to not completely block the server.
+        // Start UpdateChecker in a separate thread to not completely block the server.
         Thread updateChecker = new UpdateChecker(this);
         updateChecker.start();
 

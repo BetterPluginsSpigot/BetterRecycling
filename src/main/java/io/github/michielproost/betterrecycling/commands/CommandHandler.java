@@ -2,7 +2,6 @@ package io.github.michielproost.betterrecycling.commands;
 
 import be.betterplugins.core.commands.shortcuts.PlayerBPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
-import be.betterplugins.core.messaging.messenger.MsgEntry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +21,9 @@ public class CommandHandler implements CommandExecutor {
     // Map every command to its name.
     private final Map<String, PlayerBPCommand> commands;
     // Help command.
-    private final HelpCommand helpCommand;
+    private final HelpCommand help;
+    // Recycle command.
+    private final RecycleCommand recycle;
 
     /**
      * Create a new CommandHandler.
@@ -34,20 +35,17 @@ public class CommandHandler implements CommandExecutor {
         this.messenger = messenger;
 
         // Recycle command.
-        PlayerBPCommand recycle = new RecycleCommand( messenger );
+        this.recycle = new RecycleCommand( messenger );
 
         // Create map.
         this.commands = new HashMap<String, PlayerBPCommand>()
         {{
             // RecycleCommand:
-            put(recycle.getCommandName(), recycle);
-            for ( String alias: recycle.getAliases() ){
-                put(alias, recycle);
-            }
+            put( recycle.getCommandName(), recycle );
         }};
 
         // Help command.
-        this.helpCommand = new HelpCommand( messenger, commands );
+        this.help = new HelpCommand( messenger, commands );
     }
 
     @Override
@@ -56,34 +54,13 @@ public class CommandHandler implements CommandExecutor {
                              @NotNull String label,
                              String[] args)
     {
-        // Get name of desired command.
-        String commandName = args.length == 0 ? "help" : args[0].toLowerCase();
-        // Check if command exists.
-        if ( commands.containsKey( commandName ) )
-        {
-            // Get appropriate command.
-            PlayerBPCommand playerBPCommand = commands.get( commandName );
-            // Has required permission.
-            if (sender.hasPermission( playerBPCommand.getPermission( ) ) )
-                // Execute command.
-                return playerBPCommand.execute( sender, cmd, args );
-            else
-                messenger.sendMessage(
-                        sender,
-                        "permission.required",
-                        new MsgEntry( "<Command>", "/br " + commandName )
-                );
-
-            // Execute command.
-            playerBPCommand.execute( sender, cmd, args );
-        }
+        // No subcommands.
+        if (args.length == 0)
+            // Execute recycle command.
+            return recycle.execute( sender, cmd, args );
         else
-        {
             // Execute help command.
-            return helpCommand.execute( sender, cmd, args );
-        }
-        // Command is used correctly.
-        return true;
+            return help.execute( sender, cmd, args );
     }
 
 }
