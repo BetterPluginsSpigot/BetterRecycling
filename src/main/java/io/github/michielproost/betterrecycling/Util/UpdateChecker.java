@@ -1,4 +1,4 @@
-package io.github.michielproost.betterrecycling.Util;
+package io.github.michielproost.betterrecycling.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -78,4 +78,5 @@ public class UpdateChecker extends Thread {
             Bukkit.getLogger().info(ChatColor.RED + "An error occurred while retrieving the latest version!");
         }
     }
+
 }

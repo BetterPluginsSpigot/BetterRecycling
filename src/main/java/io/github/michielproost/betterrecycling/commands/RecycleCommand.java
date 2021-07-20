@@ -3,7 +3,7 @@ package io.github.michielproost.betterrecycling.commands;
 import be.betterplugins.core.commands.shortcuts.PlayerBPCommand;
 import be.betterplugins.core.messaging.messenger.Messenger;
 import be.betterplugins.core.messaging.messenger.MsgEntry;
-import io.github.michielproost.betterrecycling.Util.ItemStackUtil;
+import io.github.michielproost.betterrecycling.util.ItemStackUtil;
 import io.github.michielproost.betterrecycling.model.RecycleResult;
 import io.github.michielproost.betterrecycling.model.Recycler;
 import org.bukkit.Material;

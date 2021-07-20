@@ -1,4 +1,4 @@
-package io.github.michielproost.betterrecycling.Util;
+package io.github.michielproost.betterrecycling.util;
 
 import org.bukkit.inventory.ItemStack;
 

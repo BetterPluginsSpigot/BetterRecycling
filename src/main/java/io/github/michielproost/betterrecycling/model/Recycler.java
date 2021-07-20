@@ -2,8 +2,8 @@ package io.github.michielproost.betterrecycling.model;
 
 import be.betterplugins.core.messaging.messenger.Messenger;
 import be.betterplugins.core.messaging.messenger.MsgEntry;
-import io.github.michielproost.betterrecycling.Util.Conversions;
-import io.github.michielproost.betterrecycling.Util.ItemStackUtil;
+import io.github.michielproost.betterrecycling.util.Conversions;
+import io.github.michielproost.betterrecycling.util.ItemStackUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

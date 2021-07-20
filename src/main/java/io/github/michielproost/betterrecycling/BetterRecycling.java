@@ -4,7 +4,7 @@ import be.betterplugins.core.messaging.logging.BPLogger;
 import be.betterplugins.core.messaging.messenger.Messenger;
 import be.dezijwegel.betteryaml.BetterLang;
 import be.dezijwegel.betteryaml.OptionalBetterYaml;
-import io.github.michielproost.betterrecycling.Util.UpdateChecker;
+import io.github.michielproost.betterrecycling.util.UpdateChecker;
 import io.github.michielproost.betterrecycling.commands.CommandHandler;
 import io.github.michielproost.betterrecycling.events.EventListener;
 import org.bstats.bukkit.Metrics;
