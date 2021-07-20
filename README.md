@@ -6,12 +6,12 @@ Help protect the environment by recycling items instead of throwing them away.
 Welcome to BetterRecycling, a plugin that cares about the environment! Recycle handheld items into their corresponding components such that they can be used at a later date to create other, new items. Damaged items only return a limited amount of components based on chance. The chance of retrieving every component gradually decreases as the damage of the item increases.
 
 ## Commands
-- `/br help`
+- `/recycle help`
   - Shows an explanation of the commands
   - `betterrecycling.help`
-- `/br recycle` or `/br r`
+- `/recycle`
   - Recycles the item in your hand. The corresponding components are placed in your inventory
-  - `betterrecycling.recycle`
+  - `betterrecycling`
 
 ## BetterRecycling versions with key upgrades
 | BetterRecycling Version        | Key upgrades           | 
