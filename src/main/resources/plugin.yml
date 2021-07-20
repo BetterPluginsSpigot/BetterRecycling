@@ -7,7 +7,8 @@ commands:
     description: BetterRecycling commands
     permission: betterrecycling
     usage: Issue the command by typing /betterrecycling in the console.
-    aliases: [br]
+    aliases: [recycle]
+
 permissions:
   betterrecycling:
     default: true
@@ -15,8 +16,5 @@ permissions:
     default: op
     children:
       betterrecycling.help: true
-      betterrecycling.recycle: true
   betterrecycling.help:
     default: true
-  betterrecycling.recycle:
-    default: op

@@ -43,20 +43,30 @@ public class RecycleCommand extends PlayerBPCommand {
 
     @Override
     public @NotNull List<String> getAliases() {
-        return Collections.singletonList("r");
+        return Collections.singletonList( "r" );
     }
 
     @Override
     public @NotNull String getPermission() {
-        return "betterrecycling.recycle";
+        return "betterrecycling";
     }
 
     @Override
     public boolean execute(@NotNull Player player, @NotNull Command cmd, String[] args)
     {
+        // Has required permission.
+        if ( !player.hasPermission( getPermission( ) ) )
+        {
+            messenger.sendMessage(
+                    player,
+                    "permission.required",
+                    new MsgEntry( "<Command>", "/recycle")
+            );
+            return true;
+        }
+
         // Get player's inventory.
         PlayerInventory inventory = player.getInventory();
-
         // Get handheld item.
         ItemStack handheld = inventory.getItemInMainHand();
         // Slot number of handheld item.
