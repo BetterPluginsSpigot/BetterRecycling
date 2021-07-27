@@ -1,4 +1,4 @@
-# BetterRecycling (56 downloads)
+# BetterRecycling (70 downloads)
 Help protect the environment by recycling items instead of throwing them away.
 
 ![banner](https://user-images.githubusercontent.com/37398740/123597719-f9a07780-d7f3-11eb-853b-beb087aba863.jpg)
